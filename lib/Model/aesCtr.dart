@@ -172,7 +172,8 @@ int SubWord(int w)
                       {
                       for (int i = 0; i < 4; i++)
                       {
-                        stdout.write("\n\t"); ShowWord(w[i]);
+                        stdout.write("\n\t");
+                        ShowWord(w[i]);
                       }
                       }
                   List<int> MahoaAES(List<int> state, List<int> key)
@@ -201,7 +202,6 @@ int SubWord(int w)
                                     kq = state;
                                     return kq;
                       }
-
                   List<int> InvShiftRows(List<int> state)
                       {
                         List<int> kq = List.filled(4,0);
@@ -274,7 +274,6 @@ int SubWord(int w)
                       kq[i] = InvNhanCot(state[i]);
                     return kq;
                   }
-
                   List<int>GiaimaAES(List<int> C,List<int> key)
                       {
                       List<int> w = KeyExpansion(key);
@@ -336,15 +335,16 @@ void main()
 
     DateTime time1 = DateTime.now();
     print("---------------------Bắt đầu mã hóa với Khóa mã hóa-----------------------------");
-    String TextKey = "dodangghet";
+    String TextKey = "avfh 122 222 aaaa";
     print("Khóa mã hóa : $TextKey");
     List<int> Key = List.filled(4,0);
     Key = input(TextKey, Key);
     print("---------------------Bắt đầu mã hóa với Planittext-----------------------------");
-    String str = "tamxinhdep";
+    String str = "abc 111 aaa bbb ccc";
     print("Input String : $str");
     List<int> state = List.filled(4,0);
     state = input(str, state);
+    ShowMatrix(state);
     List<int> C = MahoaAES(state,Key);
     print("\nBản mã :");
     ShowMatrix(C);
@@ -357,7 +357,7 @@ void main()
     DateTime time2 = DateTime.now();
     stdout.write("\nTime of Process");
     double a = (time2.millisecond - time1.millisecond) / 1000;
-    stdout.write("$a");
+    stdout.write(" $a");
     time2.subtract(Duration(seconds: time1.second,));
     // Test_decode
 
