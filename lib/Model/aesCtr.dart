@@ -78,7 +78,7 @@ List<int> KeyExpansion(List<int> Key,int Nr, int Nk)
         if(i % Nr == 0)
           w[i] = G(w[i-1], (i~/Nr)-1) ^ w[i - Nr];
         else if(Nr > 6 && i % Nr == 4){
-          w[i] = G(w[i-1], (i~/Nr)-1) ^ w[i - Nr];
+          w[i] = SubWord(w[i]);
         }
         else
           w[i] = w[i-1] ^ w[i-Nr];
@@ -444,30 +444,36 @@ void choose_key(int Nr, int Nk){
 void main()
     {
     DateTime time1 = DateTime.now();
-    choose_key(4,10);
-    // print("---------------------Bắt đầu mã hóa với Khóa mã hóa-----------------------------");
-    // String TextKey = "i love you 3000@ve you 3000@";
-    // print(TextKey.length);
-    // print("Khóa mã hóa : $TextKey");
-    // List<int> Key = List.filled(6,0);
-    // Key = input(TextKey,Key);
-    // ShowMatrix(Key,6);
-    // print("\n---------------------Bắt đầu mã hóa với "
-    //     "Planittext-----------------------------");
-    // String str = "ilov@ you 3000";
-    // print("\nInput String : $str");
-    // List<int> state = List.filled(4,0);
-    // state = input(str, state);
-    // ShowMatrix(state,4);
-    // List<int> C = MahoaAES(state,Key,6,12);
-    // print("\nBản mã :");
-    // ShowMatrix(C,4);
-    // print("\n---------------------Bắt đầu giải mã với Decryption Text-----------------------------");
-    // List<int> D = GiaimaAES(C,Key,6,12);
-    // print("\nGiai ma :");
-    // ShowMatrix(D,4);
-    // stdout.write('\nOutput String : ');
-    // output(D);
+    print("---------------------Bắt đầu mã hóa với Khóa mã hóa-----------------------------");
+    String TextKey = "1234567@234567890987654312345678";
+    print(TextKey.length);
+    print("Khóa mã hóa : $TextKey");
+    List<int> Key = List.filled(8,0);
+    Key = input(TextKey,Key);
+    ShowMatrix(Key,8);
+    print("\n---------------------Bắt đầu mã hóa với "
+        "Planittext-----------------------------");
+    String str = "123 456712345678";
+    print("\nInput String : $str");
+    List<int> state = List.filled(4,0);
+    state = input(str, state);
+    ShowMatrix(state,4);
+   // List<int> C = MahoaAES(state,Key,6,12);
+    //78AFB075
+    // 53B1C50B
+    // BF8BB611
+    // 9D64881B
+     int c1 = 0x78AFB075 ; int c2 = 0x53B1C50B; int c3 = 0xBF8BB611; int c4 =
+    0x9D64881B;
+     List <int> C = [c1,c2,c3,c4];
+    print("\nBản mã :");
+    ShowMatrix(C,4);
+    print("\n---------------------Bắt đầu giải mã với Decryption Text-----------------------------");
+    List<int> D = GiaimaAES(C,Key,6,12);
+    print("\nGiai ma :");
+    ShowMatrix(D,4);
+    stdout.write('\nOutput String : ');
+    output(D);
     DateTime time2 = DateTime.now();
     stdout.write("\nTime of Process");
     double a = (time2.millisecond - time1.millisecond) / 1000;

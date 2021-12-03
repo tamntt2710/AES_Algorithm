@@ -1,84 +1,175 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'Views/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ScreenUtilInit(
+      designSize: Size(360, 690),
+      builder: () => MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: HomeScreen(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0x2b7e1516;
+  final _formKey = GlobalKey<FormState>();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter = ShowWord(_counter);
-    });
-  }
-  int ShowWord( int w) // in giá trị
-  {
-    int hexan = 0;
-    for(int i = 1; i <= 8; i++)  // 8 chữ số hexa
-        {
-          hexan = (w >> 32 - i*4) & 0xF;
-          print(hexan);
-        }
-    return hexan;
-  }
-  int RotWord(int w){
-    int byte1 = (w >> 24 ) & 0xFF;
-    int byte234 = w & 0xFFFFFF;
-    int rot = (byte234 << 8) | byte1;
-    return rot;
-
-
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("asset/backgrond.png"),
+                  fit: BoxFit.cover)),
+        child: Padding(
+          padding: EdgeInsets.only(right :600.h,top: 200.h),
+          child: Center(
+              child: Container(
+                height: 500.h,
+                width: 300.h,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding:  EdgeInsets.all(30.0),
+                      child: Text("AES Algorithm",style: TextStyle(color: Colors
+                          .white,fontWeight: FontWeight.bold,fontSize: 30),),
+                    ),
+                    Form(
+                      child: Column(
+                        key: _formKey,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white24,
+                              borderRadius: new BorderRadius.circular(10.0),
+                            ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal:10.h),
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                      prefixIcon: Padding(
+                                        padding: EdgeInsets.symmetric
+                                          (horizontal:10.h,vertical: 15.h), // add
+                                        child: Icon(Icons.account_circle,color:
+                                        Colors.white70,),
+                                      ),
+                                    border: InputBorder.none,
+                                    labelText: "Username",
+                                    labelStyle: TextStyle(
+                                        color: Colors.white70,
+                                      fontSize: 14
+                                    )
+                                  ),
+                                ),
+                              ),
+                            ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 30.h),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white24,
+                                borderRadius: new BorderRadius.circular(10.0),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal:10.h),
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter some text';
+                                    }
+                                    return null;
+                                  },
+                                  obscureText: true,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+
+                                      prefixIcon: Padding(
+                                        padding: EdgeInsets.symmetric
+                                          (horizontal:10.h,vertical: 15.h), // add
+                                        child: Icon(Icons.lock,color:
+                                        Colors.white70,),
+                                      ),
+                                      border: InputBorder.none,
+                                      labelText: "Password",
+                                      labelStyle: TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 14
+                                      )
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top :30.h),
+                            child: GestureDetector(
+                              onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) =>
+                                        HomeScreen()));
+                                // final FormState? form = _formKey.currentState;
+                                // if(form!.validate())
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) =>
+                                //       HomeScreen()),
+                                //);
+                              },
+                              child: Container(
+                                height: 40.h,
+                                width: 100.w,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30)
+                                ),
+                                child: Center(
+                                  child: Text("Login",style: TextStyle(
+                                    color: Colors.blueAccent,
+                                    fontSize: 18
+                                  ),),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+      )
+      );
   }
 }
+
+
