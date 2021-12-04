@@ -36,6 +36,26 @@ extension BitTypeExtension on BitType {
         return '256 bit';
     }
   }
+  int get Nr {
+    switch (this) {
+      case BitType.type128Bit:
+        return 4;
+      case BitType.type192Bit:
+        return 6;
+      case BitType.type256Bit:
+        return 8;
+    }
+  }
+  int get Nk {
+    switch (this) {
+      case BitType.type128Bit:
+        return 10;
+      case BitType.type192Bit:
+        return 12;
+      case BitType.type256Bit:
+        return 14;
+    }
+  }
   int get limitLength {
     switch (this) {
       case BitType.type128Bit:
@@ -46,4 +66,5 @@ extension BitTypeExtension on BitType {
         return 32;
     }
   }
+
 }

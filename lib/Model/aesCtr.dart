@@ -5,7 +5,7 @@ void ShowWord(int w) // in giá trị
   for (int i = 1; i <= 8; i++)  // 8 chữ số hexa
       { //mỗi lầ dịch vòng trái 4 bit để in từng bit
     int hexan = (w >> 32 - i * 4) & 0xF;
-    stdout.write("${hexan.toRadixString(16).toUpperCase()}");
+    print("${hexan.toRadixString(16).toUpperCase()}");
   }
 
 }
@@ -78,6 +78,7 @@ List<int> KeyExpansion(List<int> Key,int Nr, int Nk)
         if(i % Nr == 0)
           w[i] = G(w[i-1], (i~/Nr)-1) ^ w[i - Nr];
         else if(Nr > 6 && i % Nr == 4){
+        //  w[i] = G(w[i-1], (i~/Nr)-1) ^ w[i - Nr];
           w[i] = SubWord(w[i]);
         }
         else
@@ -161,7 +162,7 @@ void ShowMatrix(List<int> w,int col)
     {
     for (int i = 0; i < col; i++)
     {
-      stdout.write("\t\n");
+      print("\t");
       ShowWord(w[i]);
     }
     }
@@ -404,19 +405,19 @@ void choose_key(int Nr, int Nk){
   String str = "ilov@ you 3000";
   String TextKey = "i love you 3000@ve you 3000@";
   while(true){
-    stdout.write("\n------------------------------------------");
-    stdout.write("\n1.Mã hóa AES-128 bit");
-    stdout.write("\n2.Mã hóa AES-192 bit");
-    stdout.write("\n3.Mã hóa AES-256 bit");
-    stdout.write("\n------------------------------------------");
-    stdout.write("\n---------Nhập lựa chọn của bạn-------------\n");
+    print("\n------------------------------------------");
+    print("\n1.Mã hóa AES-128 bit");
+    print("\n2.Mã hóa AES-192 bit");
+    print("\n3.Mã hóa AES-256 bit");
+    print("\n------------------------------------------");
+    print("\n---------Nhập lựa chọn của bạn-------------\n");
     int choose = stdin.readByteSync();
     print(choose);
 
     switch(choose){
       case 49 :
         {
-          stdout.write("\n1.Mã hóa AES-128 bit");
+          print("\n1.Mã hóa AES-128 bit");
           print("\n---------------------Bắt đầu mã hóa với Khóa mã "
               "hóa-----------------------------");
           print(TextKey.length);
@@ -427,12 +428,12 @@ void choose_key(int Nr, int Nk){
           print("\nBản mã :");
           ShowMatrix(C, 4);
           List<int> D = GiaimaAES(C, Key, Nr, Nk);
-          stdout.write('\nOutput String : ');
+          print('\nOutput String : ');
           output(D);
           break;
         }
       case 50 :
-        stdout.write("\n1.Mã hóa AES-192 bit");
+        print("\n1.Mã hóa AES-192 bit");
         break;
         default:
           print("\nMoi nhap lại : ");
@@ -445,39 +446,36 @@ void main()
     {
     DateTime time1 = DateTime.now();
     print("---------------------Bắt đầu mã hóa với Khóa mã hóa-----------------------------");
-    String TextKey = "1234567@234567890987654312345678";
+    String TextKey = "i love you 3000@ i love ";
     print(TextKey.length);
     print("Khóa mã hóa : $TextKey");
-    List<int> Key = List.filled(8,0);
+    List<int> Key = List.filled(6,0);
     Key = input(TextKey,Key);
-    ShowMatrix(Key,8);
+    ShowMatrix(Key,6);
     print("\n---------------------Bắt đầu mã hóa với "
         "Planittext-----------------------------");
-    String str = "123 456712345678";
+    String str = "cur  ntBitType.v";
     print("\nInput String : $str");
     List<int> state = List.filled(4,0);
     state = input(str, state);
     ShowMatrix(state,4);
-   // List<int> C = MahoaAES(state,Key,6,12);
+    List<int> C = MahoaAES(state,Key,6,12);
     //78AFB075
     // 53B1C50B
     // BF8BB611
     // 9D64881B
-     int c1 = 0x78AFB075 ; int c2 = 0x53B1C50B; int c3 = 0xBF8BB611; int c4 =
-    0x9D64881B;
-     List <int> C = [c1,c2,c3,c4];
     print("\nBản mã :");
     ShowMatrix(C,4);
     print("\n---------------------Bắt đầu giải mã với Decryption Text-----------------------------");
     List<int> D = GiaimaAES(C,Key,6,12);
     print("\nGiai ma :");
     ShowMatrix(D,4);
-    stdout.write('\nOutput String : ');
+    print('\nOutput String : ');
     output(D);
     DateTime time2 = DateTime.now();
-    stdout.write("\nTime of Process");
+    print("\nTime of Process");
     double a = (time2.millisecond - time1.millisecond) / 1000;
-    stdout.write(" $a");
+    print(" $a");
     time2.subtract(Duration(seconds: time1.second,));
 
 }
@@ -535,6 +533,6 @@ void output(List<int> D){
     String ascii = List.generate(splitted.length,
             (i) => String.fromCharCode(int.parse(splitted[i], radix: 16))).join();
  //   ascii = ascii.replaceAll('0', '');
-    stdout.write('${ascii}');
+    print('${ascii}');
   }
 }
