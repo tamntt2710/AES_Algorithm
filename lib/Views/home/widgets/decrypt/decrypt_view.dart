@@ -25,7 +25,7 @@ class DecryptPage extends StatelessWidget {
     final controller = Get.find<DecryptController>();
 
     return Container(
-      width: 150.w,
+      width: 140.w,
       padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 20.h),
       decoration: const BoxDecoration(color: kPrimaryColor),
       child: Column(
@@ -120,7 +120,7 @@ class DecryptPage extends StatelessWidget {
             style: TextStyle(
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 92),
+              contentPadding: EdgeInsets.symmetric(horizontal: 87),
               prefixText: '0x',
               prefixStyle: TextStyle(
                   fontWeight: FontWeight.bold,
