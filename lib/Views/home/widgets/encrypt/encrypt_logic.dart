@@ -8,17 +8,16 @@ import 'package:get/get.dart';
 class EncryptController extends GetxController {
   TextEditingController plainTextEditingController = TextEditingController();
   TextEditingController keyTextEditingController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>(debugLabel: 'encrypt');
   RxBool autoValidate = RxBool(true);
   Rx<BitType> currentBitType = Get.find<HomeController>().currentBitType;
   RxInt processingTime = Get.find<HomeController>().processingTime;
   RxList<int> cipherTexts = RxList.empty();
-
   void onTapEncrypt() {
     if (validateAndSave) {
+      DateTime time1 = DateTime.now();
       debugPrint('plaintText = ${plainTextEditingController.text}');
       debugPrint('KeyText = ${keyTextEditingController.text}');
-      DateTime time1 = DateTime.now();
       debugPrint(
           "---------------------Bắt đầu mã hóa với Khóa mã hóa-----------------------------");
       String textKey = keyTextEditingController.text;

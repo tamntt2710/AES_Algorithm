@@ -1,3 +1,4 @@
+import 'package:aes_algorithm/Views/home/widgets/decrypt/decrypt_view.dart';
 import 'package:aes_algorithm/Views/home/widgets/encrypt/encrypt_view.dart';
 import 'package:aes_algorithm/common/validate_util.dart';
 import 'package:aes_algorithm/Views/home/widgets/title_of_action.dart';
@@ -92,6 +93,7 @@ class HomePage extends StatelessWidget {
                     ),
                     const EncryptPage(),
                     // giai ma
+                    const DecryptPage()
                   ],
                 ),
               ),

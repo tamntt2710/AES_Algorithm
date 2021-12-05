@@ -70,8 +70,6 @@ List<int> KeyExpansion(List<int> Key,int Nr, int Nk)
       List<int> w = List.filled((4 * (Nk +1)),0) ;
       while(i < Nr) {
         w[i] = Key[i];
-        print("\t Key $i");
-        ShowWord(w[i]);
         i++;
       }
       while(i< 4*(Nk+1)){
@@ -82,8 +80,6 @@ List<int> KeyExpansion(List<int> Key,int Nr, int Nk)
         }
         else
           w[i] = w[i-1] ^ w[i-Nr];
-        print("\t Key $i");
-        ShowWord(w[i]);
         i++;
       }
       return w;
@@ -142,13 +138,13 @@ int NhanCot( int w)
            int byte3 = (w >> 8) & 0xFF;
            int byte4 = w & 0xFF;
            int kq1 = Nhan2(byte1) ^ Nhan3(byte2) ^ byte3 ^ byte4;
-           print("\nKQ1 $kq1");
+           // print("\nKQ1 $kq1");
            int kq2 = byte1 ^ Nhan2(byte2) ^ Nhan3(byte3) ^ byte4;
-           print("\nKQ2 $kq2");
+           // print("\nKQ2 $kq2");
            int kq3 = byte1 ^ byte2 ^ Nhan2(byte3) ^ Nhan3(byte4);
-           print("\nKQ3 $kq3");
+           // print("\nKQ3 $kq3");
            int kq4 = Nhan3(byte1) ^ byte2 ^ byte3 ^ Nhan2(byte4);
-           print("\nKQ4 $kq4");
+           // print("\nKQ4 $kq4");
            kq = (kq1 << 24) | (kq2 << 16) | (kq3 << 8) | kq4;
           return kq;
     }
@@ -167,51 +163,6 @@ void ShowMatrix(List<int> w,int col)
       ShowWord(w[i]);
     }
     }
-List<int> MahoaAES_128(List<int> state, List<int> key)
-    {
-
-              List<int> w = KeyExpansion(key,4,10);
-              List <int> w0 = [w[0],w[1],w[2],w[3]];
-              state = AddRoundKey(state,w0);
-              for(int j = 1; j <= 9; j++)
-              {
-                List <int> wi = [w[4*j],w[4*j+1],w[4*j+2],w[4*j+3]];
-                state = SubBytes(state);
-                state = ShiftRows(state);
-                state = MixColumns(state);
-                state = AddRoundKey(state,wi);
-              }
-              //Vong thu 10
-                state = SubBytes(state);
-                state = ShiftRows(state);
-                List <int> w40 = [w[40],w[41],w[42],w[43]];
-                state = AddRoundKey(state,w40);
-                List<int> kq = List.filled(4,0) ;
-                  kq = state;
-                  return kq;
-    }
-List<int> MahoaAES_192(List<int> state, List<int> key)
-    {
-  List<int> w = KeyExpansion(key,6,12);
-  List <int> w0 = [w[0],w[1],w[2],w[3]];
-  state = AddRoundKey(state,w0);
-  for(int j = 1; j <= 11; j++)
-  {
-    List <int> wi = [w[4*j],w[4*j+1],w[4*j+2],w[4*j+3]];
-    state = SubBytes(state);
-    state = ShiftRows(state);
-    state = MixColumns(state);
-    state = AddRoundKey(state,wi);
-  }
-  //Vong thu 12
-  state = SubBytes(state);
-  state = ShiftRows(state);
-  List <int> w40 = [w[48],w[49],w[50],w[51]];
-  state = AddRoundKey(state,w40);
-  List<int> kq = List.filled(4,0) ;
-  kq = state;
-  return kq;
-}
 List<int> MahoaAES(List<int> state, List<int> key, int Nr ,int Nk)
 {
   List<int> w = KeyExpansion(key,Nr,Nk);
@@ -222,7 +173,6 @@ List<int> MahoaAES(List<int> state, List<int> key, int Nr ,int Nk)
   for(int j = 1; j <= Nk-1; j++)
   {
     List <int> wi = [w[4*j],w[4*j+1],w[4*j+2],w[4*j+3]];
-    print('$j : $wi');
     state = SubBytes(state);
     print("\ntest_SubBytes $j");
     ShowMatrix(state, 4);
@@ -308,13 +258,13 @@ int InvNhanCot(int w)
      int byte3 = (w >> 8) & 0xFF;
      int byte4 = w & 0xFF;
      int kq1 = NhanE(byte1) ^ NhanB(byte2) ^ NhanD(byte3) ^ Nhan9(byte4);
-     print("\nKQ1' $kq1");
+     // print("\nKQ1' $kq1");
      int kq2 = Nhan9(byte1) ^ NhanE(byte2) ^ NhanB(byte3) ^ NhanD(byte4);
-     print("\nKQ2' $kq2");
+     // print("\nKQ2' $kq2");
      int kq3 = NhanD(byte1) ^ Nhan9(byte2) ^ NhanE(byte3) ^ NhanB(byte4);
-     print("\nKQ3' $kq3");
+     // print("\nKQ3' $kq3");
      int kq4 = NhanB(byte1) ^ NhanD(byte2) ^ Nhan9(byte3) ^ NhanE(byte4);
-     print("\nKQ4' $kq4");
+     // print("\nKQ4' $kq4");
      kq = (kq1 << 24) | (kq2 << 16) | (kq3 << 8) | kq4;
      return kq;
 }
@@ -322,50 +272,15 @@ List<int> InvMixColumns(List<int> state)
     {
   List<int> kq = List.filled(4,0);
   for (int i = 0; i < 4; i++) {
-    kq[i] = InvNhanCot(state[i]);
+    kq[i] = (state[i]);
   }
   return kq;
 }
-List<int>GiaimaAES_128(List<int> C,List<int> key)
-    {
-    List<int> w = KeyExpansion(key,4,10);
-    List<int> w40 = [w[40],w[41],w[42],w[43]];
-    List<int> state = AddRoundKey(C,w40);
-    for(int j = 1; j <=9 ;j++){
-      List <int> wi = [w[40 - (4*j)],w[40 - (4*j)+1],w[40 - (4*j)+2], w[40- 4*j + 3]];
-      state = InvShiftRows(state);
-      state = InvSubBytes(state);
-      state = AddRoundKey(state,wi);
-      state = InvMixColumns(state);
-    }
-    // Vong 10
-    state = InvShiftRows(state);
-    state = InvSubBytes(state);
-    List<int> w3 = [w[0],w[1],w[2],w[3]];
-    state = AddRoundKey(state,w3);
-    return state;
-}
-List<int>GiaimaAES_192(List<int> C,List<int> key)
-{
-  List<int> w = KeyExpansion(key,6,12);
-  List<int> w40 = [w[48],w[49],w[50],w[51]];
-  List<int> state = AddRoundKey(C,w40);
-  for(int j = 1; j <= 11 ;j++){
-    List <int> wi = [w[48 - 4*j],w[48 - 4*j+1],w[48 - 4*j+2], w[48- 4*j + 3]];
-    state = InvShiftRows(state);
-    state = InvSubBytes(state);
-    state = AddRoundKey(state,wi);
-    state = InvMixColumns(state);
-  }
-  // Vong 12
-  state = InvShiftRows(state);
-  state = InvSubBytes(state);
-  List<int> w3 = [w[0],w[1],w[2],w[3]];
-  state = AddRoundKey(state,w3);
-  return state;
-}
+
 List<int>GiaimaAES(List<int> C,List<int> key, int Nr, int Nk)
 {
+    print("\nĐầu vào mã hóa $Nk");
+    ShowMatrix(C, 4);
     List<int> w = KeyExpansion(key,Nr,Nk);
     List <int> w40 = [w[4 * Nk],w[4 * Nk + 1],w[4 * Nk+2],w[4 * Nk+3]];
     List<int> state = AddRoundKey(C,w40);
@@ -374,7 +289,6 @@ List<int>GiaimaAES(List<int> C,List<int> key, int Nr, int Nk)
     for(int j = 1; j <= Nk-1 ;j++){
       List <int> wi = [w[4 * Nk - 4*j],w[4 * Nk - 4*j+1],w[4 * Nk - 4*j+2],
         w[4 * Nk - 4*j + 3]];
-      print('$j : $wi');
       state = InvShiftRows(state);
       print("\ntest_InvShifRows $j");
       ShowMatrix(state, 4);

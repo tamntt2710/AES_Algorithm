@@ -135,13 +135,16 @@ class EncryptPage extends StatelessWidget {
   }
 
   Widget decryptedCode(int text) {
+   String str = '';
+   str = '0x' + '0'*(8-text.toRadixString(16).toUpperCase().length)+ text
+       .toRadixString(16).toUpperCase();
     return Container(
       width: 40.w,
       height: 20.h,
       decoration: const BoxDecoration(color: kPrimaryColor),
       child: Center(
         child: SelectableText(
-          "0x${text.toRadixString(16).toUpperCase()}",
+          str,
           style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
