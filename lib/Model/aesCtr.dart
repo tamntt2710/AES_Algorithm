@@ -5,7 +5,7 @@ void ShowWord(int w) // in giá trị
   for (int i = 1; i <= 8; i++)  // 8 chữ số hexa
       { //mỗi lầ dịch vòng trái 4 bit để in từng bit
     int hexan = (w >> 32 - i * 4) & 0xF;
-    print("${hexan.toRadixString(16).toUpperCase()}");
+    stdout.write("${hexan.toRadixString(16).toUpperCase()}");
   }
 
 }
@@ -70,21 +70,20 @@ List<int> KeyExpansion(List<int> Key,int Nr, int Nk)
       List<int> w = List.filled((4 * (Nk +1)),0) ;
       while(i < Nr) {
         w[i] = Key[i];
-        // print("\t Key $i");
-        // ShowWord(w[i]);
+        print("\t Key $i");
+        ShowWord(w[i]);
         i++;
       }
       while(i< 4*(Nk+1)){
         if(i % Nr == 0)
           w[i] = G(w[i-1], (i~/Nr)-1) ^ w[i - Nr];
         else if(Nr > 6 && i % Nr == 4){
-        //  w[i] = G(w[i-1], (i~/Nr)-1) ^ w[i - Nr];
           w[i] = SubWord(w[i]);
         }
         else
           w[i] = w[i-1] ^ w[i-Nr];
-        // print("\t Key $i");
-        // ShowWord(w[i]);
+        print("\t Key $i");
+        ShowWord(w[i]);
         i++;
       }
       return w;
@@ -118,7 +117,6 @@ List<int> ShiftRows(List<int> state)
               int byte2 = state[(i+1) % 4] & 0xFF0000;
               int byte3 = state[(i+2) % 4] & 0xFF00;
               int byte4 = state[(i+3) % 4] & 0xFF;
-
               kq[i] = byte1 | byte2 | byte3 | byte4;
           }
             return kq;
@@ -129,7 +127,6 @@ int Nhan2(int w)  // dịch bit sang trái 1
          if(kq > 256) kq = kq ^ 0x11b;  // xor với hàm m
          kq = kq & 0xFF;  // lấy 1 byte
          return kq;
-
     }
 int Nhan3( int w)
     {
@@ -145,10 +142,14 @@ int NhanCot( int w)
            int byte3 = (w >> 8) & 0xFF;
            int byte4 = w & 0xFF;
            int kq1 = Nhan2(byte1) ^ Nhan3(byte2) ^ byte3 ^ byte4;
+           print("\nKQ1 $kq1");
            int kq2 = byte1 ^ Nhan2(byte2) ^ Nhan3(byte3) ^ byte4;
+           print("\nKQ2 $kq2");
            int kq3 = byte1 ^ byte2 ^ Nhan2(byte3) ^ Nhan3(byte4);
+           print("\nKQ3 $kq3");
            int kq4 = Nhan3(byte1) ^ byte2 ^ byte3 ^ Nhan2(byte4);
-            kq = (kq1 << 24) | (kq2 << 16) | (kq3 << 8) | kq4;
+           print("\nKQ4 $kq4");
+           kq = (kq1 << 24) | (kq2 << 16) | (kq3 << 8) | kq4;
           return kq;
     }
 List<int> MixColumns( List<int> state)
@@ -162,7 +163,7 @@ void ShowMatrix(List<int> w,int col)
     {
     for (int i = 0; i < col; i++)
     {
-      print("\t");
+      stdout.write("\n");
       ShowWord(w[i]);
     }
     }
@@ -216,19 +217,36 @@ List<int> MahoaAES(List<int> state, List<int> key, int Nr ,int Nk)
   List<int> w = KeyExpansion(key,Nr,Nk);
   List <int> w0 = [w[0],w[1],w[2],w[3]];
   state = AddRoundKey(state,w0);
+  print("\ntest_v0");
+  ShowMatrix(state, 4);
   for(int j = 1; j <= Nk-1; j++)
   {
     List <int> wi = [w[4*j],w[4*j+1],w[4*j+2],w[4*j+3]];
+    print('$j : $wi');
     state = SubBytes(state);
+    print("\ntest_SubBytes $j");
+    ShowMatrix(state, 4);
     state = ShiftRows(state);
+    print("\ntest_ShifRows $j");
+    ShowMatrix(state, 4);
     state = MixColumns(state);
+    print("\ntest_MixColumn $j");
+    ShowMatrix(state, 4);
     state = AddRoundKey(state,wi);
+    print("\ntest_AddRoundKey $j");
+    ShowMatrix(state, 4);
   }
   //Vong thu 12
   state = SubBytes(state);
+  print("test_SubBytes $Nk");
+  ShowMatrix(state, 4);
   state = ShiftRows(state);
+  print("test_ShifRows $Nk");
+  ShowMatrix(state, 4);
   List <int> w40 = [w[4 * Nk],w[4 * Nk + 1],w[4 * Nk+2],w[4 * Nk+3]];
   state = AddRoundKey(state,w40);
+  print("\ntest_v $Nk");
+  ShowMatrix(state, 4);
   List<int> kq = List.filled(4,0) ;
   kq = state;
   return kq;
@@ -290,17 +308,22 @@ int InvNhanCot(int w)
      int byte3 = (w >> 8) & 0xFF;
      int byte4 = w & 0xFF;
      int kq1 = NhanE(byte1) ^ NhanB(byte2) ^ NhanD(byte3) ^ Nhan9(byte4);
+     print("\nKQ1' $kq1");
      int kq2 = Nhan9(byte1) ^ NhanE(byte2) ^ NhanB(byte3) ^ NhanD(byte4);
+     print("\nKQ2' $kq2");
      int kq3 = NhanD(byte1) ^ Nhan9(byte2) ^ NhanE(byte3) ^ NhanB(byte4);
+     print("\nKQ3' $kq3");
      int kq4 = NhanB(byte1) ^ NhanD(byte2) ^ Nhan9(byte3) ^ NhanE(byte4);
+     print("\nKQ4' $kq4");
      kq = (kq1 << 24) | (kq2 << 16) | (kq3 << 8) | kq4;
      return kq;
 }
 List<int> InvMixColumns(List<int> state)
     {
   List<int> kq = List.filled(4,0);
-  for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++) {
     kq[i] = InvNhanCot(state[i]);
+  }
   return kq;
 }
 List<int>GiaimaAES_128(List<int> C,List<int> key)
@@ -346,21 +369,37 @@ List<int>GiaimaAES(List<int> C,List<int> key, int Nr, int Nk)
     List<int> w = KeyExpansion(key,Nr,Nk);
     List <int> w40 = [w[4 * Nk],w[4 * Nk + 1],w[4 * Nk+2],w[4 * Nk+3]];
     List<int> state = AddRoundKey(C,w40);
+    print("\ntest_GM_v1 $Nk");
+    ShowMatrix(state, 4);
     for(int j = 1; j <= Nk-1 ;j++){
       List <int> wi = [w[4 * Nk - 4*j],w[4 * Nk - 4*j+1],w[4 * Nk - 4*j+2],
         w[4 * Nk - 4*j + 3]];
+      print('$j : $wi');
       state = InvShiftRows(state);
+      print("\ntest_InvShifRows $j");
+      ShowMatrix(state, 4);
       state = InvSubBytes(state);
+      print("\ntest_InvSubByte $j");
+      ShowMatrix(state, 4);
       state = AddRoundKey(state,wi);
+      print("\ntest_GM_AddRoundKey $j");
+      ShowMatrix(state, 4);
       state = InvMixColumns(state);
+      print("\ntest_InvMixColumns $j");
+      ShowMatrix(state, 4);
     }
     // Vong 12
     state = InvShiftRows(state);
+    print("\ntest_InvShifRows $Nk");
+    ShowMatrix(state, 4);
     state = InvSubBytes(state);
+    print("\ntest_InvSubByte $Nk");
+    ShowMatrix(state, 4);
     List<int> w3 = [w[0],w[1],w[2],w[3]];
     state = AddRoundKey(state,w3);
+    print("\ntest_GM $Nk");
+    ShowMatrix(state, 4);
     return state;
-
 }
 int InvSubWord(int w)
     {
@@ -398,76 +437,28 @@ List<int> InvSubBytes(List<int> state)
           kq[i] = InvSubWord(state[i]);
         return kq;
     }
-void choose_key(int Nr, int Nk){
-  int choose = 0;
-  List<int> Key = List.filled(Nr,0);
-  List<int> state = List.filled(4,0);
-  String str = "ilov@ you 3000";
-  String TextKey = "i love you 3000@ve you 3000@";
-  while(true){
-    print("\n------------------------------------------");
-    print("\n1.Mã hóa AES-128 bit");
-    print("\n2.Mã hóa AES-192 bit");
-    print("\n3.Mã hóa AES-256 bit");
-    print("\n------------------------------------------");
-    print("\n---------Nhập lựa chọn của bạn-------------\n");
-    int choose = stdin.readByteSync();
-    print(choose);
-
-    switch(choose){
-      case 49 :
-        {
-          print("\n1.Mã hóa AES-128 bit");
-          print("\n---------------------Bắt đầu mã hóa với Khóa mã "
-              "hóa-----------------------------");
-          print(TextKey.length);
-          Key = input(TextKey, Key);
-          state = input(str, state);
-          ShowMatrix(state, 4);
-          List<int> C = MahoaAES(state, Key, Nr, Nk);
-          print("\nBản mã :");
-          ShowMatrix(C, 4);
-          List<int> D = GiaimaAES(C, Key, Nr, Nk);
-          print('\nOutput String : ');
-          output(D);
-          break;
-        }
-      case 50 :
-        print("\n1.Mã hóa AES-192 bit");
-        break;
-        default:
-          print("\nMoi nhap lại : ");
-          break;
-    }
-  }
-
-}
 void main()
     {
     DateTime time1 = DateTime.now();
     print("---------------------Bắt đầu mã hóa với Khóa mã hóa-----------------------------");
-    String TextKey = "i love you 3000@ i love ";
+    String TextKey = "33333333333  333";
     print(TextKey.length);
     print("Khóa mã hóa : $TextKey");
-    List<int> Key = List.filled(6,0);
+    List<int> Key = List.filled(4,0);
     Key = input(TextKey,Key);
-    ShowMatrix(Key,6);
+    ShowMatrix(Key,4);
     print("\n---------------------Bắt đầu mã hóa với "
         "Planittext-----------------------------");
-    String str = "cur  ntBitType.v";
+    String str = "1212121222121212";
     print("\nInput String : $str");
     List<int> state = List.filled(4,0);
     state = input(str, state);
     ShowMatrix(state,4);
-    List<int> C = MahoaAES(state,Key,6,12);
-    //78AFB075
-    // 53B1C50B
-    // BF8BB611
-    // 9D64881B
+    List<int> C = MahoaAES(state,Key,4,10);
     print("\nBản mã :");
     ShowMatrix(C,4);
     print("\n---------------------Bắt đầu giải mã với Decryption Text-----------------------------");
-    List<int> D = GiaimaAES(C,Key,6,12);
+    List<int> D = GiaimaAES(C,Key,4,10);
     print("\nGiai ma :");
     ShowMatrix(D,4);
     print('\nOutput String : ');
@@ -522,8 +513,8 @@ List<int> input(String input, List<int> state){
   }
   return state;
 }
-void output(List<int> D){
-
+String? output(List<int> D){
+  String result = '';
   for(int i = 0 ; i < D.length ; i++){
     String hexString = D[i].toRadixString(16);
     List<String> splitted = [];
@@ -532,7 +523,8 @@ void output(List<int> D){
     }
     String ascii = List.generate(splitted.length,
             (i) => String.fromCharCode(int.parse(splitted[i], radix: 16))).join();
- //   ascii = ascii.replaceAll('0', '');
     print('${ascii}');
+    result+=ascii;
   }
+  return result;
 }
