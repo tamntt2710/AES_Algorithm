@@ -2,13 +2,16 @@ import 'package:aes_algorithm/Model/aesCtr.dart';
 import 'package:aes_algorithm/Model/bit_enum.dart';
 import 'package:aes_algorithm/Views/home/home_logic.dart';
 import 'package:aes_algorithm/common/constant.dart';
+import 'package:aes_algorithm/common/function_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class EncryptController extends GetxController {
   TextEditingController plainTextEditingController = TextEditingController();
   TextEditingController keyTextEditingController = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>(debugLabel: 'encrypt');
+  final GlobalKey<FormState> formKey =
+      GlobalKey<FormState>(debugLabel: 'encrypt');
   RxBool autoValidate = RxBool(true);
   Rx<BitType> currentBitType = Get.find<HomeController>().currentBitType;
   RxInt processingTime = Get.find<HomeController>().processingTime;
@@ -71,6 +74,12 @@ class EncryptController extends GetxController {
   void clearText() {
     plainTextEditingController.clear();
     keyTextEditingController.clear();
+    cipherTexts.clear();
     autoValidate.value = false;
+  }
+
+  void copyToClipBoard(String text) {
+    Clipboard.setData(ClipboardData(text: text));
+    FunctionUtil.showToast('Copied "$text" to Clipboard');
   }
 }

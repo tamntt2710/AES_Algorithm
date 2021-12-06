@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 void main() {
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
@@ -13,14 +14,13 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: Size(360, 690),
       builder: () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         getPages: AppPages.routes,
         initialRoute: Routes.HOME,
-
       ),
     );
   }
 }
-
