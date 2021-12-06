@@ -30,7 +30,7 @@ class DecryptPage extends StatelessWidget {
       decoration: const BoxDecoration(color: kPrimaryColor),
       child: Column(
         children: [
-          const TitleOfAction(title: "AES Encryption"),
+          const TitleOfAction(title: "Decryption"),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 0.h),
             child: Form(

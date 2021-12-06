@@ -28,7 +28,7 @@ class EncryptPage extends StatelessWidget {
       decoration: const BoxDecoration(color: kBackgroundColor),
       child: Column(
         children: [
-          const TitleOfAction(title: "AES Encryption"),
+          const TitleOfAction(title: "Encryption"),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 20.h),
             child: Obx(() {
