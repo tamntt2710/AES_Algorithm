@@ -25,9 +25,9 @@ class HomePage extends StatelessWidget {
     final controller = Get.find<HomeController>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kPrimaryColor,
-        title: _buildAppBar(),
-      ),
+          backgroundColor: kPrimaryColor,
+          title: _buildAppBar(),
+          toolbarHeight: 80),
       body: Container(
         child: Column(
           children: [
@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
                               unSelectedColor: Theme.of(context).canvasColor,
                               buttonLables: BitTypeEnum.bitListLabel,
                               buttonValues: BitTypeEnum.bitList,
-                              shapeRadius: 10,
+                              shapeRadius: 8,
                               enableShape: true,
                               buttonTextStyle: const ButtonTextStyle(
                                   selectedColor: Colors.white,
@@ -71,9 +71,9 @@ class HomePage extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 30, vertical: 20),
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                              ),
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(8)),
                               child: Center(
                                 child: Obx(() {
                                   return Text(
@@ -91,9 +91,9 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const EncryptPage(),
+                    Expanded(child: const EncryptPage()),
                     // giai ma
-                    const DecryptPage()
+                    Expanded(child: const DecryptPage())
                   ],
                 ),
               ),
@@ -106,7 +106,7 @@ class HomePage extends StatelessWidget {
 
   Container _buildAppBar() {
     return Container(
-      height: 100.h,
+      margin: EdgeInsets.symmetric(vertical: 20),
       decoration: const BoxDecoration(
         color: kPrimaryColor,
       ),

@@ -1,17 +1,16 @@
-import 'package:aes_algorithm/common/validate_util.dart';
-import 'package:aes_algorithm/Views/home/widgets/title_of_action.dart';
-import 'package:aes_algorithm/widgets/custom_button.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:aes_algorithm/Model/bit_enum.dart';
+import 'package:aes_algorithm/Views/home/widgets/title_of_action.dart';
 import 'package:aes_algorithm/common/constant.dart';
-import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
+import 'package:aes_algorithm/common/validate_util.dart';
+import 'package:aes_algorithm/widgets/custom_button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'encrypt_logic.dart';
 
@@ -25,12 +24,12 @@ class EncryptPage extends StatelessWidget {
     return Container(
       width: 150.w,
       padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 20.h),
-      decoration: const BoxDecoration(color: kBackgroundColor),
       child: Column(
         children: [
           const TitleOfAction(title: "Encryption"),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 20.h),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.h),
+            margin: EdgeInsets.only(top: 45.h),
             child: Obx(() {
               return Form(
                 key: controller.formKey,
@@ -67,42 +66,40 @@ class EncryptPage extends StatelessWidget {
               );
             }),
           ),
-          true
-              ? Obx(() {
+          Obx(() {
+            return (controller.cipherTexts.isNotEmpty)
+                ? Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: const Text(
+                      'Cipher: ',
+                      style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                : const SizedBox();
+          }),
+          Row(
+            children: [
+              Expanded(
+                child: Obx(() {
                   return GridView.builder(
                     shrinkWrap: true,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: 5 / 1,
+                            childAspectRatio: 4 / 1,
                             crossAxisSpacing: 8,
                             mainAxisSpacing: 8),
-                    itemBuilder: (_, index) =>
-                        decryptedCode(controller.cipherTexts[index]),
+                    itemBuilder: (_, index) => decryptedCode(
+                        controller, controller.cipherTexts[index]),
                     itemCount: controller.cipherTexts.length,
                   );
-                })
-              : Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        decryptedCode(0x321456AE),
-                        decryptedCode(0x321456AE)
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        decryptedCode(0x321456AE),
-                        decryptedCode(0x321456AE)
-                      ],
-                    ),
-                  ],
-                ),
+                }),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -134,17 +131,20 @@ class EncryptPage extends StatelessWidget {
     );
   }
 
-  Widget decryptedCode(int text) {
-   String str = '';
-   str = '0x' + '0'*(8-text.toRadixString(16).toUpperCase().length)+ text
-       .toRadixString(16).toUpperCase();
+  Widget decryptedCode(EncryptController controller, int text) {
+    String str = '';
+    str = '0x' +
+        '0' * (8 - text.toRadixString(16).toUpperCase().length) +
+        text.toRadixString(16).toUpperCase();
     return Container(
-      width: 40.w,
       height: 20.h,
       decoration: const BoxDecoration(color: kPrimaryColor),
       child: Center(
         child: SelectableText(
           str,
+          onTap: () {
+            controller.copyToClipBoard(str.replaceAll('0x', ''));
+          },
           style: const TextStyle(
               color: Colors.white,
               fontSize: 18,

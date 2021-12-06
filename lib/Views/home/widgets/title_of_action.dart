@@ -6,18 +6,19 @@ class TitleOfAction extends StatelessWidget {
   const TitleOfAction({
     Key? key,
     required this.title,
+    this.textColor = kPrimaryColor,
   }) : super(key: key);
 
   final String title;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.h),
-      decoration: const BoxDecoration(color: kPrimaryColor),
       child: Text(title,
-          style: const TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+          style: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.bold, color: textColor)),
     );
   }
 }

@@ -88,13 +88,18 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  form_field_validator:
+  flutter_web_plugins:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  fluttertoast:
     dependency: "direct main"
     description:
-      name: form_field_validator
+      name: fluttertoast
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "8.0.8"
   get:
     dependency: "direct main"
     description:
@@ -102,13 +107,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.5.1"
-  intl:
+  js:
     dependency: transitive
     description:
-      name: intl
+      name: js
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.17.0"
+    version: "0.6.3"
   lints:
     dependency: transitive
     description:
@@ -207,3 +212,4 @@ packages:
     version: "2.1.0"
 sdks:
   dart: ">=2.14.4 <3.0.0"
+  flutter: ">=1.10.0"

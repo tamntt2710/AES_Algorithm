@@ -39,7 +39,7 @@ dependencies:
   flutter_screenutil: ^5.0.1
   custom_radio_grouped_button: ^2.1.1
   get: ^4.5.1
-  form_field_validator: ^1.1.0
+  fluttertoast: ^8.0.8
 dev_dependencies:
   flutter_test:
     sdk: flutter

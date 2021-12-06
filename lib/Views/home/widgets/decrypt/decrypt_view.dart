@@ -25,14 +25,17 @@ class DecryptPage extends StatelessWidget {
     final controller = Get.find<DecryptController>();
 
     return Container(
-      width: 140.w,
       padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 20.h),
       decoration: const BoxDecoration(color: kPrimaryColor),
       child: Column(
         children: [
-          const TitleOfAction(title: "Decryption"),
+
+          const TitleOfAction(
+            title: "Decryption",
+            textColor: Colors.white,
+          ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 0.h),
+            padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 0.h),
             child: Form(
               child: Obx(() {
                 return Form(
@@ -42,43 +45,61 @@ class DecryptPage extends StatelessWidget {
                       : AutovalidateMode.disabled,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [true ? Obx(() {
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 5 / 1,
-                            crossAxisSpacing: 8,
-                            mainAxisSpacing: 8),
-                        itemBuilder: (_, index) =>
-                            RowOfDecrypt(textController: controller
-                                .cipherTextControllers[index]),
-                        itemCount: controller.cipherTextControllers.length,
-                      );
-                    }) :
-                    GridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                      shrinkWrap: true,
-                      childAspectRatio: 5 / 1,
-                      children: [
-                        RowOfDecrypt(),
-                        RowOfDecrypt(),
-                        RowOfDecrypt(),
-                        RowOfDecrypt(),
-                      ],
-                    ),
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: const Text(
+                          'Cipher: ',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      true
+                          ? Obx(() {
+                              return GridView.builder(
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 4 / 1,
+                                        crossAxisSpacing: 8,
+                                        mainAxisSpacing: 8),
+                                itemBuilder: (_, index) => _buildRowOfDecrypt(
+                                    textController: controller
+                                        .cipherTextControllers[index]),
+                                itemCount:
+                                    controller.cipherTextControllers.length,
+                              );
+                            })
+                          : GridView.count(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 20,
+                              shrinkWrap: true,
+                              childAspectRatio: 5 / 1,
+                              children: [
+                                _buildRowOfDecrypt(),
+                                _buildRowOfDecrypt(),
+                                _buildRowOfDecrypt(),
+                                _buildRowOfDecrypt(),
+                              ],
+                            ),
                       _buildInputKey(controller, 30, false),
-                      CustomButton(onTap: () {
-                        controller.onTapDecrypt();
-                      }, text: 'Decrypt', encrypt: false),
+                      CustomButton(
+                          onTap: () {
+                            controller.onTapDecrypt();
+                          },
+                          text: 'Decrypt',
+                          encrypt: false),
                       Padding(
                         padding: const EdgeInsets.only(top: 30.0),
                         child: Container(
                           height: 40.h,
-                          decoration: BoxDecoration(color: Colors.white),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8)),
                           child: Center(
                             child: Obx(() {
                               return SelectableText(
@@ -104,44 +125,50 @@ class DecryptPage extends StatelessWidget {
     );
   }
 
-  Widget RowOfDecrypt({TextEditingController? textController}) {
+  Widget _buildRowOfDecrypt({TextEditingController? textController}) {
     return Container(
       width: 40.w,
-      decoration: BoxDecoration(color: Colors.white),
+      height: 40.h,
       child: Center(
           child: TextFormField(
-            controller: textController,
-            textAlign: TextAlign.start,
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(8),
-              FilteringTextInputFormatter.allow(RegExp(r'[\da-fA-F]')),
-              UpperCaseTextFormatter()
-            ],
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 87),
-              prefixText: '0x',
-              prefixStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  wordSpacing: 2
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(25.0),
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(25.0),
-                borderSide: BorderSide(color: Colors.white, width: 2.0),
-              ),
-            ),
-          )),
+        controller: textController,
+        textAlign: TextAlign.start,
+        validator: (val) => Validate.validateCipherText(val),
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(8),
+          FilteringTextInputFormatter.allow(RegExp(r'[\da-fA-F]')),
+          UpperCaseTextFormatter()
+        ],
+        style: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        decoration: InputDecoration(
+          prefixText: '0x',
+          contentPadding: EdgeInsets.only(left: 90),
+          prefixStyle: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              wordSpacing: 2),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.white, width: 2.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.white, width: 2.0),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.white, width: 2.0),
+          ),
+          errorStyle: TextStyle(color: Colors.white, fontSize: 14),
+        ),
+      )),
     );
   }
 
-  Widget _buildInputKey(DecryptController controller, double vertical,
-      bool encrypt) {
+  Widget _buildInputKey(
+      DecryptController controller, double vertical, bool encrypt) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: vertical),
       child: TextFormField(
@@ -149,8 +176,10 @@ class DecryptPage extends StatelessWidget {
         style: encrypt
             ? const TextStyle(color: kPrimaryColor)
             : const TextStyle(color: Colors.white),
+/*
         validator: (val) =>
             Validate.validateKey(val, controller.currentBitType.value),
+*/
         inputFormatters: [
           LengthLimitingTextInputFormatter(
               controller.currentBitType.value.limitLength),
@@ -161,10 +190,14 @@ class DecryptPage extends StatelessWidget {
                   ? BorderSide(color: kPrimaryColor, width: 2.0)
                   : BorderSide(color: Colors.white, width: 2.0),
             ),
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white, width: 2.0),
+            ),
             labelText: "Enter your key",
             labelStyle: encrypt
                 ? TextStyle(color: kPrimaryColor, fontSize: 14)
-                : TextStyle(color: Colors.white, fontSize: 14)),
+                : TextStyle(color: Colors.white, fontSize: 14),
+            errorStyle: TextStyle(color: Colors.white, fontSize: 14)),
       ),
     );
   }
