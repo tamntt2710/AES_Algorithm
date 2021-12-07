@@ -70,8 +70,6 @@ List<int> KeyExpansion(List<int> Key,int Nr, int Nk)
       List<int> w = List.filled((4 * (Nk +1)),0) ;
       while(i < Nr) {
         w[i] = Key[i];
-        // print("\t Key $i");
-        // ShowWord(w[i]);
         i++;
       }
       while(i< 4*(Nk+1)){
@@ -82,8 +80,6 @@ List<int> KeyExpansion(List<int> Key,int Nr, int Nk)
         }
         else
           w[i] = w[i-1] ^ w[i-Nr];
-        // print("\t Key $i");
-        // ShowWord(w[i]);
         i++;
       }
       return w;
@@ -541,9 +537,7 @@ List<int> input(String input, List<int> state){
  // if(input.length != 16) print("Input thieu ${16-input.length} ki tu");
   List<String> data = splitStringByLength(input, 4);
   for(int i = 0 ; i < state.length;i++){
-    // print(data[i]);
-    // print(int.parse(convertStringtoHexString(data[i])).toRadixString(16));
-    state[i] = int.parse(convertStringtoHexString(data[i]));
+     state[i] = int.parse(convertStringtoHexString(data[i]));
   }
   return state;
 }

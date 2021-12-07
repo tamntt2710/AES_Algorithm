@@ -40,6 +40,7 @@ dependencies:
   custom_radio_grouped_button: ^2.1.1
   get: ^4.5.1
   fluttertoast: ^8.0.8
+  hex: ^0.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
