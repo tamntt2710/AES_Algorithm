@@ -108,10 +108,6 @@ class EncryptPage extends StatelessWidget {
   Widget _buildInputPlaintText(EncryptController controller, String label) {
     return TextFormField(
       controller: controller.plainTextEditingController,
-      validator: (val) => Validate.validatePlainText(val),
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(16),
-      ],
       style: const TextStyle(color: kPrimaryColor),
       decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(

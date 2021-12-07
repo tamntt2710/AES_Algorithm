@@ -1,5 +1,7 @@
 import 'package:aes_algorithm/Model/aesCtr.dart';
+import 'package:aes_algorithm/Model/aes_model.dart';
 import 'package:aes_algorithm/Model/bit_enum.dart';
+import 'package:aes_algorithm/Model/hexa.dart';
 import 'package:aes_algorithm/Views/home/home_logic.dart';
 import 'package:aes_algorithm/common/constant.dart';
 import 'package:aes_algorithm/common/function_util.dart';
@@ -17,46 +19,15 @@ class EncryptController extends GetxController {
   RxInt processingTime = Get.find<HomeController>().processingTime;
   RxList<int> cipherTexts = RxList.empty();
   void onTapEncrypt() {
-    if (validateAndSave) {
-      DateTime time1 = DateTime.now();
-      debugPrint('plaintText = ${plainTextEditingController.text}');
-      debugPrint('KeyText = ${keyTextEditingController.text}');
-      debugPrint(
-          "---------------------Bắt đầu mã hóa với Khóa mã hóa-----------------------------");
-      String textKey = keyTextEditingController.text;
-      debugPrint("Khóa mã hóa : $textKey");
-      List<int> Key = List.filled(currentBitType.value.Nr, 0);
-      Key = input(textKey, Key);
-      ShowMatrix(Key, currentBitType.value.Nr);
-      debugPrint("\n---------------------Bắt đầu mã hóa với "
-          "Planittext-----------------------------");
-      String str = plainTextEditingController.text;
-      debugPrint("\nInput String : $str");
-      List<int> state = List.filled(Nb, 0);
-      state = input(str, state);
-      ShowMatrix(state, 4);
-      List<int> C = MahoaAES(
-          state, Key, currentBitType.value.Nr, currentBitType.value.Nk);
-      cipherTexts.clear();
-      cipherTexts.addAll(C);
-      debugPrint("\nBản mã :");
-      ShowMatrix(C, Nb);
-      debugPrint(
-          "\n---------------------Bắt đầu giải mã với Decryption Text-----------------------------");
-      List<int> D =
-          GiaimaAES(C, Key, currentBitType.value.Nr, currentBitType.value.Nk);
-      debugPrint("\nGiai ma :");
-      ShowMatrix(D, Nb);
-      debugPrint('\nOutput String : ');
-      output(D);
-      DateTime time2 = DateTime.now();
-      debugPrint("\nTime of Process");
-      double a = (time2.millisecond - time1.millisecond) / 1000;
-      processingTime.value = time2.difference(time1).abs().inMilliseconds;
-      debugPrint(" $a");
-      time2.subtract(Duration(
-        seconds: time1.second,
-      ));
+    if (true) {
+      AESModel aesModel = AESModel(
+          plaintText: Hex.fromPlaintText(plainTextEditingController.text),
+          plaintTextKey: keyTextEditingController.text,
+          bitType: BitType.type128Bit);
+      Hex output =
+          aesModel.encryptToHex(); //4869e1babf7520c491e1bab9702074726169
+      debugPrint('result = ${output.stringPresent}');
+      processingTime.value = aesModel.processingTime;
     }
   }
 

@@ -41,6 +41,7 @@ dependencies:
   get: ^4.5.1
   fluttertoast: ^8.0.8
   hex: ^0.2.0
+  convert: ^3.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
