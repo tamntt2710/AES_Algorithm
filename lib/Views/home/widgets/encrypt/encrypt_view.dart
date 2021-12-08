@@ -26,7 +26,6 @@ class EncryptPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<EncryptController>();
-    final controller_decrypt = Get.find<DecryptController>();
     return Container(
       padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 20.h),
       child: Column(
@@ -49,7 +48,10 @@ class EncryptPage extends StatelessWidget {
                         "Plaint "
                         "Text"),
                     _buildInputKey(controller, 20, true),
-                    _buildRadioHexOrBase64(controller,'Encryption Format',true),
+                    SizedBox(height: 8.h),
+                    _buildRadioHexOrBase64(
+                        controller, 'Encryption Format', true),
+                    SizedBox(height: 16.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -67,11 +69,12 @@ class EncryptPage extends StatelessWidget {
                             encrypt: true),
                       ],
                     ),
+                    SizedBox(height: 16.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const Text(
-                          'Cipher: ',
+                          'Encrypted Text: ',
                           style: TextStyle(
                               color: kPrimaryColor,
                               fontSize: 16,
@@ -79,30 +82,8 @@ class EncryptPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                     _buildOutputCipher(controller, ''),
-                    SizedBox(height: 8),
-                    _buildRadioHexOrBase64(controller,'Decryption Format',
-                        false),
-                    CustomButton(
-                        onTap: () {
-                          controller.onTapDecrypt();
-                        },
-                        text: 'Decrypt',
-                        encrypt: true),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Decrypted Text: ',
-                          style: TextStyle(
-                              color: kPrimaryColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    _buildOutputDecrytedText(controller, ''),
                   ],
                 ),
               );
@@ -145,7 +126,8 @@ class EncryptPage extends StatelessWidget {
     });
   }
 
-  Widget _buildInputKey(EncryptController controller, double vertical, bool encrypt) {
+  Widget _buildInputKey(
+      EncryptController controller, double vertical, bool encrypt) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: vertical),
       child: TextFormField(
@@ -180,81 +162,54 @@ class EncryptPage extends StatelessWidget {
       ),
     );
   }
-}
 
-Widget _buildRadioHexOrBase64(EncryptController controller, String text, bool
- isEncrypt) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Text('$text: ',style:TextStyle(
-          color: kPrimaryColor,
-          fontSize: 16,
-          fontWeight: FontWeight.bold
-      )),
-      SizedBox(width:16),
-      RadioButtonGroup(
-        items: ["Base64", "Hex"],
-        onChanged: (index, val) {
-          EncodeType selected =
-              EncodeTypeEnum.getEncodeType(index ?? 0);
-          if(isEncrypt){
-            controller.encryptEncodeType.value=selected;
-          }else{
-            controller.decryptEncodeType.value=selected;
-          }
-        },
-      ),
-    ],
-  );
-}
+  Widget _buildRadioHexOrBase64(
+      EncryptController controller, String text, bool isEncrypt) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text('$text: ',
+            style: TextStyle(
+                color: kPrimaryColor,
+                fontSize: 16,
+                fontWeight: FontWeight.bold)),
+        SizedBox(width: 16),
+        RadioButtonGroup(
+          items: ["Base64", "Hex"],
+          onChanged: (index, val) {
+            EncodeType selected = EncodeTypeEnum.getEncodeType(index ?? 0);
+            controller.onEncodeTypeChange(selected);
+          },
+        ),
+      ],
+    );
+  }
 
-Widget _buildOutputCipher(EncryptController controller, String label) {
-  return TextFormField(
-    keyboardType: TextInputType.multiline,
-    maxLines: 5,
-    readOnly: true,
-    controller: controller.outputTextEditingController,
-    style: const TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
-    decoration: InputDecoration(
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
-        ),
-        border: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
-        ),
-        labelText: label,
-        labelStyle: const TextStyle(color: kPrimaryColor, fontSize: 14)),
-  );
-}
-
-Widget _buildOutputDecrytedText(EncryptController controller, String label) {
-  return TextFormField(
-    keyboardType: TextInputType.multiline,
-    maxLines: 5,
-    readOnly: true,
-    controller: controller.outputDecrytedController,
-    style: const TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
-    decoration: InputDecoration(
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
-        ),
-        border: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
-        ),
-        labelText: label,
-        labelStyle: const TextStyle(color: kPrimaryColor, fontSize: 14)),
-  );
+  Widget _buildOutputCipher(EncryptController controller, String label) {
+    return TextFormField(
+      keyboardType: TextInputType.multiline,
+      maxLines: 5,
+      readOnly: true,
+      onTap: () {
+        controller.copyToClipBoard();
+      },
+      controller: controller.outputTextEditingController,
+      style: const TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+      decoration: InputDecoration(
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
+          ),
+          focusedErrorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
+          ),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
+          ),
+          labelText: label,
+          labelStyle: const TextStyle(color: kPrimaryColor, fontSize: 14)),
+    );
+  }
 }

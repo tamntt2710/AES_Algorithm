@@ -16,9 +16,12 @@ class TitleOfAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.h),
+      margin: EdgeInsets.only(top: 50.h),
       child: Text(title,
           style: TextStyle(
-              fontSize: 24, fontWeight: FontWeight.bold, color: textColor,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: textColor,
               wordSpacing: 3)),
     );
   }

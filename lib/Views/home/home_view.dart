@@ -41,8 +41,10 @@ class HomePage extends StatelessWidget {
                           padding: EdgeInsets.all(20.0),
                           child: _buildAppBar(),
                         ),
-                        SizedBox(height: 16,),
-                        Divider(height:2),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Divider(height: 2),
                         Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -53,10 +55,11 @@ class HomePage extends StatelessWidget {
                                 child: CustomRadioButton(
                                   height: 50.h,
                                   spacing: 8.h,
-                                  unSelectedBorderColor  :Colors.white,
+                                  unSelectedBorderColor: Colors.white,
                                   elevation: 0,
                                   horizontal: true,
-                                  defaultSelected: controller.currentBitType.value,
+                                  defaultSelected:
+                                      controller.currentBitType.value,
                                   unSelectedColor: Colors.white,
                                   buttonLables: BitTypeEnum.bitListLabel,
                                   buttonValues: BitTypeEnum.bitList,
@@ -65,8 +68,10 @@ class HomePage extends StatelessWidget {
                                   buttonTextStyle: const ButtonTextStyle(
                                       selectedColor: Colors.white,
                                       unSelectedColor: kPrimaryColor,
-                                      textStyle: TextStyle(fontSize: 20,fontWeight:
-                                      FontWeight.bold,wordSpacing: 3)),
+                                      textStyle: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          wordSpacing: 3)),
                                   radioButtonValue: (value) {
                                     BitType selectedEnum = value as BitType;
                                     controller.onChangeBit(selectedEnum);
@@ -87,8 +92,7 @@ class HomePage extends StatelessWidget {
                                   child: Center(
                                     child: Obx(() {
                                       return Text(
-                                        "Time : ${controller.processingTime
-                                            .value} ms",
+                                        "Time : ${controller.processingTime.value} ms",
                                         style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 18,
@@ -99,19 +103,38 @@ class HomePage extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              Container(
+                                child: Text(
+                                  "Phạm Doãn Hiếu - CT030419",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      wordSpacing: 2),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: Container(
+                                  child: Text(
+                                    "Nguyễn Thị Thanh Tâm - CT030444",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        wordSpacing: 2),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Expanded(
-                    flex: 4,
-                      child: const EncryptPage()),
+                  Expanded(child: const EncryptPage()),
                   // giai ma
-                  Expanded(
-                    flex: 2,
-                      child: const DecryptPage())
+                  Expanded(child: const DecryptPage())
                 ],
               ),
             ),
