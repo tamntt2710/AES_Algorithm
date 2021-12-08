@@ -2,8 +2,8 @@ import 'package:aes_algorithm/Model/bit_enum.dart';
 
 class Validate {
   static String? validatePlainText(String? value) {
-    if ((value?.length ?? 0) < 16) {
-      return 'Vui lòng nhập tiếp ${16 - (value?.length ?? 0)} ký tự';
+    if (value?.isEmpty??false) {
+      return 'Vui lòng nhập ít nhất 1 ký tự';
     }
     return null;
   }

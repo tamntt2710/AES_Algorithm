@@ -28,7 +28,7 @@ void main() {
   });
   test('aes Model', () {
     AESModel aesModel = AESModel(
-        plaintText: 'Hiếu đẹp trai nhất hệ mặt trời',
+        plaintText: 'Hi mọi người bài 05 ( không phai ) lúc sản xuất ra 2 bản , bản này cũng là bản gốc Bản nào lên cũng được ! Tùy từng gu và phong cách của mỗi người để cảm nhận',
         plaintTextKey: '0123456789ABCDEF',
         bitType: BitType.type128Bit);
     Hex output = aesModel.encryptToHex(); //4869e1babf7520c491e1bab9702074726169
@@ -37,7 +37,8 @@ void main() {
         .stringPresent); //5d5b9bc5d3b35746f7c233f8d328bd51ff9d91abca2264126f3705ef9cc7033
     AESModel aesModel2 = AESModel(
         encryptedText:
-            '0x8094432be2757bdc81276dd256c8a16b54d4afdedec1bf370edbb82db1561e34',
+        output
+            .stringPresent,
         plaintTextKey: '0123456789ABCDEF',
         bitType: BitType.type128Bit);
     Hex decrypted = aesModel2.decryptToHex();
@@ -57,3 +58,4 @@ void main() {
     print(ciphers);*/
   });
 }
+// xịn

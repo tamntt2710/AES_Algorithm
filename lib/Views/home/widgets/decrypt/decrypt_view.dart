@@ -23,102 +23,47 @@ class DecryptPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<DecryptController>();
-
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 20.h),
+      // padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 0.h),
+      margin: EdgeInsets.symmetric(vertical: 250.h,horizontal: 5),
       decoration: const BoxDecoration(color: kPrimaryColor),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
           const TitleOfAction(
-            title: "Decryption",
+            title: "Information Security",
             textColor: Colors.white,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 0.h),
-            child: Form(
-              child: Obx(() {
-                return Form(
-                  key: controller.formDecryptKey,
-                  autovalidateMode: controller.autoValidate.isTrue
-                      ? AutovalidateMode.onUserInteraction
-                      : AutovalidateMode.disabled,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Cipher: ',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      true
-                          ? Obx(() {
-                              return GridView.builder(
-                                shrinkWrap: true,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: 4 / 1,
-                                        crossAxisSpacing: 8,
-                                        mainAxisSpacing: 8),
-                                itemBuilder: (_, index) => _buildRowOfDecrypt(
-                                    textController: controller
-                                        .cipherTextControllers[index]),
-                                itemCount:
-                                    controller.cipherTextControllers.length,
-                              );
-                            })
-                          : GridView.count(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 20,
-                              crossAxisSpacing: 20,
-                              shrinkWrap: true,
-                              childAspectRatio: 5 / 1,
-                              children: [
-                                _buildRowOfDecrypt(),
-                                _buildRowOfDecrypt(),
-                                _buildRowOfDecrypt(),
-                                _buildRowOfDecrypt(),
-                              ],
-                            ),
-                      _buildInputKey(controller, 30, false),
-                      CustomButton(
-                          onTap: () {
-                            controller.onTapDecrypt();
-                          },
-                          text: 'Decrypt',
-                          encrypt: false),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30.0),
-                        child: Container(
-                          height: 40.h,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Center(
-                            child: Obx(() {
-                              return SelectableText(
-                                controller.decryptedText.value,
-                                style: TextStyle(
-                                    color: kPrimaryColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    wordSpacing: 2),
-                              );
-                            }),
-                          ),
-                        ),
-                      )
-                    ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    "Phạm Doãn Hiếu - CT030407",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        wordSpacing: 2),
                   ),
-                );
-              }),
-            ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top : 10.0),
+                  child: Container(
+                    child: Text(
+                      "Nguyễn Thị Thanh Tâm - CT030444",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          wordSpacing: 2),
+                    ),
+                  ),
+                )
+              ],
+            )
           ),
         ],
       ),

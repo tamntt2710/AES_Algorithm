@@ -1,8 +1,6 @@
+import 'dart:ui';
 import 'package:aes_algorithm/Views/home/widgets/decrypt/decrypt_view.dart';
 import 'package:aes_algorithm/Views/home/widgets/encrypt/encrypt_view.dart';
-import 'package:aes_algorithm/common/validate_util.dart';
-import 'package:aes_algorithm/Views/home/widgets/title_of_action.dart';
-import 'package:aes_algorithm/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -24,78 +22,97 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<HomeController>();
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: kPrimaryColor,
-          title: _buildAppBar(),
-          toolbarHeight: 80),
       body: Container(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 30.h),
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 30.h),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: 200,
-                            child: CustomRadioButton(
-                              elevation: 0,
-                              horizontal: true,
-                              defaultSelected: controller.currentBitType.value,
-                              unSelectedColor: Theme.of(context).canvasColor,
-                              buttonLables: BitTypeEnum.bitListLabel,
-                              buttonValues: BitTypeEnum.bitList,
-                              shapeRadius: 8,
-                              enableShape: true,
-                              buttonTextStyle: const ButtonTextStyle(
-                                  selectedColor: Colors.white,
-                                  unSelectedColor: Colors.black,
-                                  textStyle: TextStyle(fontSize: 18)),
-                              radioButtonValue: (value) {
-                                BitType selectedEnum = value as BitType;
-                                controller.onChangeBit(selectedEnum);
-                              },
-                              selectedColor:
-                                  Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 40.h, horizontal: 20.h),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 20),
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Center(
-                                child: Obx(() {
-                                  return Text(
-                                    "Thời gian : ${controller.processingTime.value} ms",
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        wordSpacing: 2),
-                                  );
-                                }),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: ScreenUtil().screenHeight,
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
                     ),
-                    Expanded(child: const EncryptPage()),
-                    // giai ma
-                    Expanded(child: const DecryptPage())
-                  ],
-                ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: _buildAppBar(),
+                        ),
+                        SizedBox(height: 16,),
+                        Divider(height:2),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                // height: 400,
+                                width: 300,
+                                child: CustomRadioButton(
+                                  height: 50.h,
+                                  spacing: 8.h,
+                                  unSelectedBorderColor  :Colors.white,
+                                  elevation: 0,
+                                  horizontal: true,
+                                  defaultSelected: controller.currentBitType.value,
+                                  unSelectedColor: Colors.white,
+                                  buttonLables: BitTypeEnum.bitListLabel,
+                                  buttonValues: BitTypeEnum.bitList,
+                                  shapeRadius: 20,
+                                  enableShape: true,
+                                  buttonTextStyle: const ButtonTextStyle(
+                                      selectedColor: Colors.white,
+                                      unSelectedColor: kPrimaryColor,
+                                      textStyle: TextStyle(fontSize: 20,fontWeight:
+                                      FontWeight.bold,wordSpacing: 3)),
+                                  radioButtonValue: (value) {
+                                    BitType selectedEnum = value as BitType;
+                                    controller.onChangeBit(selectedEnum);
+                                  },
+                                  selectedColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 40.h, horizontal: 20.h),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 20),
+                                  decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Center(
+                                    child: Obx(() {
+                                      return Text(
+                                        "Time : ${controller.processingTime
+                                            .value} ms",
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            wordSpacing: 2),
+                                      );
+                                    }),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                      child: const EncryptPage()),
+                  // giai ma
+                  Expanded(
+                    flex: 2,
+                      child: const DecryptPage())
+                ],
               ),
             ),
           ],
@@ -106,7 +123,7 @@ class HomePage extends StatelessWidget {
 
   Container _buildAppBar() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: EdgeInsets.only(top: 50),
       decoration: const BoxDecoration(
         color: kPrimaryColor,
       ),
@@ -114,7 +131,7 @@ class HomePage extends StatelessWidget {
         child: Text(
           "AES Algorithm",
           style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 50),
+              color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 50),
         ),
       ),
     );

@@ -44,18 +44,24 @@ class AESModel {
     if (encryptedText!.isEmpty) {
       print('empty encrypted Text');
     }
-    assert(encryptedText!.contains('0x'));
-    Hex hex = Hex.from0XString(encryptedText!);
-    List<Hex> splitedHex = splitHexByLength(hex.hexString, 32);
-    List<int> byteCodes = [];
-    for (var hex in splitedHex) {
-      List<String>? ciphers = convertHexStringToList4HexString(hex.hexString);
-      final List<int> newList = ciphers.map((e) => int.parse(e)).toList();
-      List<int> D = GiaimaAES(newList, getUIntKey(), bitType.Nr, bitType.Nk);
-      byteCodes.addAll(cipherToInit(D));
+    if(encryptedText!.contains('0x')){
+
+    }else {
+      encryptedText = '0x' + encryptedText!;
     }
-    endTime = DateTime.now();
+    //  assert(encryptedText!.contains('0x'));
+      Hex hex = Hex.from0XString(encryptedText!);
+      List<Hex> splitedHex = splitHexByLength(hex.hexString, 32);
+      List<int> byteCodes = [];
+      for (var hex in splitedHex) {
+        List<String>? ciphers = convertHexStringToList4HexString(hex.hexString);
+        final List<int> newList = ciphers.map((e) => int.parse(e)).toList();
+        List<int> D = GiaimaAES(newList, getUIntKey(), bitType.Nr, bitType.Nk);
+        byteCodes.addAll(cipherToInit(D));
+      }
+      endTime = DateTime.now();
     return Hex.fromByteCode(byteCodes);
+
   }
 
   List<int> getUIntKey() {

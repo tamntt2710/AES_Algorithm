@@ -24,7 +24,7 @@ String convertPlainTextToHexString(String str) {
 }
 
 List<String> convertHexStringToList4HexString(String hexString) {
-  assert(hexString.length == 32);
+ // assert(hexString.length == 32);
   List<String> hexList = [];
   hexList = splitStringByLength(hexString, 8);
   for (int i = 0; i < 4; i++) {

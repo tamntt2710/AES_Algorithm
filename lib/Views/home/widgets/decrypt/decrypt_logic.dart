@@ -6,12 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DecryptController extends GetxController {
-  RxList<TextEditingController> cipherTextControllers = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ].obs;
+
+  TextEditingController encryptedTextEditingController = TextEditingController();
   TextEditingController keyTextEditingController = TextEditingController();
   final GlobalKey<FormState> formDecryptKey =
       GlobalKey<FormState>(debugLabel: 'fuck');
@@ -19,27 +15,23 @@ class DecryptController extends GetxController {
   Rx<BitType> currentBitType = Get.find<HomeController>().currentBitType;
   RxInt processingTime = Get.find<HomeController>().processingTime;
   RxList<int> cipherTexts = RxList.empty();
-  RxString decryptedText = 'Decrypted Text'.obs;
+  TextEditingController decryptedText = TextEditingController();
 
   void onTapDecrypt() {
     if (true) {
-      DateTime time1 = DateTime.now();
-/*
-      cipherTexts.clear();
-      for (var textController in cipherTextControllers) {
-        debugPrint('val= ${textController.text}');
-        cipherTexts.add(int.parse(textController.text, radix: 16));
-      }
-      cipherTexts.forEach(print);
-*/
       if (true) {
         AESModel aesModel = AESModel(
             encryptedText:
-                '0x5d5b9bc5d3b35746f7c233f8d328bd51a745f35cf50652cefbbd4462898799b807b77b97a683d2aea4b969f658136e2c',
+            encryptedTextEditingController.text,
             plaintTextKey: keyTextEditingController.text,
             bitType: BitType.type128Bit);
+        Hex output = aesModel.decryptToHex(); //4869e1babf7520c491e1bab9702074726169
+        debugPrint('result = ${output.stringPresent}');
+        decryptedText.text = output.toPlaintText();
+        processingTime.value = aesModel.processingTime;
         print(aesModel.decryptToHex().toPlaintText());
       }
+
     }
   }
 

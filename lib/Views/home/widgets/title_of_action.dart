@@ -18,7 +18,8 @@ class TitleOfAction extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.h),
       child: Text(title,
           style: TextStyle(
-              fontSize: 24, fontWeight: FontWeight.bold, color: textColor)),
+              fontSize: 24, fontWeight: FontWeight.bold, color: textColor,
+              wordSpacing: 3)),
     );
   }
 }
