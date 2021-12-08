@@ -26,29 +26,21 @@ class AESModel {
   Hex encryptToHex() {
     startTime = DateTime.now();
     List<int> stateList = [];
-    List<int> stateList2 = [];
     String hexString = convertPlainTextToHexString(plaintText!);
-    var splitedHexString = splitStringByLength(hexString, 32);
     List<Hex> hexList = splitHexByLength(hexString, 32);
-    for (var str in splitedHexString) {
-      List<String>? ciphers = convertHexStringToList4HexString(str);
-      final List<int> newList = ciphers.map((e) => int.parse(e)).toList();
-      List<int> state = MahoaAES(newList, getUIntKey(), bitType.Nr, bitType.Nk);
-      stateList.addAll(state);
-    }
     for (var hex in hexList) {
       List<String>? ciphers = convertHexStringToList4HexString(hex.hexString);
       final List<int> newList = ciphers.map((e) => int.parse(e)).toList();
       List<int> state = MahoaAES(newList, getUIntKey(), bitType.Nr, bitType.Nk);
-      stateList2.addAll(state);
+      stateList.addAll(state);
     }
-    print(stateList);
-    print('compare to:\n$stateList2');
+    print('ciphers= $stateList');
     endTime = DateTime.now();
     return fromCipher(stateList);
   }
 
   Hex decryptToHex() {
+    startTime = DateTime.now();
     if (encryptedText!.isEmpty) {
       print('empty encrypted Text');
     }
@@ -62,6 +54,7 @@ class AESModel {
       List<int> D = GiaimaAES(newList, getUIntKey(), bitType.Nr, bitType.Nk);
       byteCodes.addAll(cipherToInit(D));
     }
+    endTime = DateTime.now();
     return Hex.fromByteCode(byteCodes);
   }
 
