@@ -50,21 +50,6 @@ class EncryptController extends GetxController {
     }
   }
 
-  void onTapDecrypt() {
-    isDecrypting.value = true;
-    if (validateAndSave) {
-      AESModel aesModel = AESModel(
-          encryptedText: outputTextEditingController.text,
-          plaintTextKey: keyTextEditingController.text,
-          bitType: currentBitType.value);
-      Hex output =
-          aesModel.decryptToHex(); //4869e1babf7520c491e1bab9702074726169
-      debugPrint('result = ${output.stringPresent}');
-      processingTime.value = aesModel.processingTime;
-      print(aesModel.decryptToHex().toPlaintText());
-    }
-  }
-
   bool get validateAndSave {
     final form = formKey.currentState;
     if (form!.validate()) {

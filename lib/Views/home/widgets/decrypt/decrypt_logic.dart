@@ -27,13 +27,14 @@ class DecryptController extends GetxController {
 
   void onTapDecrypt() {
     if (validateAndSave) {
-      String input = encryptEncodeType.value == EncodeType.base64
+      String input = EncodeType.base64 == EncodeType.base64
           ? Hex.fromBase64(encryptedTextEditingController.text).stringPresent
           : encryptedTextEditingController.text;
+
       AESModel aesModel = AESModel(
           encryptedText: input,
           plaintTextKey: keyTextEditingController.text,
-          bitType: BitType.type128Bit);
+          bitType: currentBitType.value);
       Hex output =
           aesModel.decryptToHex(); //4869e1babf7520c491e1bab9702074726169
       debugPrint('result = ${output.stringPresent}');
