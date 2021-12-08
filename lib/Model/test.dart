@@ -74,6 +74,10 @@ String hexJoin(String hex) {
 List<int> cipherToInit(List<int> D) {
   List<String> newList = [];
   for (int i = 0; i < D.length; i++) {
+    if (D[i] == 0) {
+      continue;
+    }
+    assert(D[i] != 0);
     String hexString = D[i].toRadixString(16).padLeft(8, '0');
     assert(hexString.length == 8);
     List<String> splitted = [];
