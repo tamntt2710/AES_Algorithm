@@ -1,17 +1,17 @@
 import 'dart:ui';
+
+import 'package:aes_algorithm/Model/bit_enum.dart';
 import 'package:aes_algorithm/Views/home/widgets/decrypt/decrypt_view.dart';
 import 'package:aes_algorithm/Views/home/widgets/encrypt/encrypt_view.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:aes_algorithm/Model/bit_enum.dart';
 import 'package:aes_algorithm/common/constant.dart';
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'home_logic.dart';
 
@@ -103,29 +103,7 @@ class HomePage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Container(
-                                child: Text(
-                                  "Phạm Doãn Hiếu - CT030419",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      wordSpacing: 2),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                child: Container(
-                                  child: Text(
-                                    "Nguyễn Thị Thanh Tâm - CT030444",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                        wordSpacing: 2),
-                                  ),
-                                ),
-                              )
+                              _buildInfo()
                             ],
                           ),
                         ),
@@ -144,18 +122,57 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget _buildInfo() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.white)),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "Phạm Doãn Hiếu - CT030419",
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                wordSpacing: 2),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Text(
+              "Nguyễn Thị Thanh Tâm - CT030444",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  wordSpacing: 2),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Container _buildAppBar() {
     return Container(
       margin: EdgeInsets.only(top: 50),
+      padding: EdgeInsets.only(bottom: 16.h),
       decoration: const BoxDecoration(
-        color: kPrimaryColor,
-      ),
-      child: const Center(
-        child: Text(
-          "AES Algorithm",
-          style: TextStyle(
-              color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 50),
-        ),
+          color: kPrimaryColor,
+          border: Border(bottom: BorderSide(color: Colors.white))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text(
+            "AES Algorithm",
+            style: TextStyle(
+                color: Colors.white70,
+                fontWeight: FontWeight.bold,
+                fontSize: 50),
+          ),
+        ],
       ),
     );
   }
