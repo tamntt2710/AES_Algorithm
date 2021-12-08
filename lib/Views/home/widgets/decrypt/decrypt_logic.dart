@@ -34,8 +34,8 @@ class DecryptController extends GetxController {
 */
       if (true) {
         AESModel aesModel = AESModel(
-            plaintText: Hex.fromPresentationString(
-                '0x8b5a24ea1e871f5795422d965d6ddef87e5b17f16abe681add0c110b945a16b11580aab5b0c0a8e956bde0992bb0f3d1'),
+            encryptedText:
+                '0x5d5b9bc5d3b35746f7c233f8d328bd51a745f35cf50652cefbbd4462898799b807b77b97a683d2aea4b969f658136e2c',
             plaintTextKey: keyTextEditingController.text,
             bitType: BitType.type128Bit);
         print(aesModel.decryptToHex().toPlaintText());

@@ -56,7 +56,7 @@ void main() {
   List<int> D = GiaimaAES(state, Key, 4, 10);
   print("\nGiai ma :");
   ShowMatrix(D, 4);
-  var decoded = utf8.decode(outputFunction(D));
+  var decoded = utf8.decode(cipherToInit(D));
   print(decoded);
   DateTime time2 = DateTime.now();
   print("\nTime of Process");
@@ -71,7 +71,7 @@ String hexJoin(String hex) {
   return '0x' + hex;
 }
 
-List<int> outputFunction(List<int> D) {
+List<int> cipherToInit(List<int> D) {
   List<String> newList = [];
   for (int i = 0; i < D.length; i++) {
     String hexString = D[i].toRadixString(16).padLeft(8, '0');
@@ -100,17 +100,17 @@ String encryptAES(String hexString) {
   final List<int> Key = key.map((e) => int.parse(e)).toList();
   ShowMatrix(Key, 4);
   List<int> state = MahoaAES(newList, Key, 4, 10);
-  Hex hex = Hex.fromByteCodes(state);
+  // Hex hex = Hex.fromCipher(state);
   print("\nBản mã :");
   ShowMatrix(state, 4);
 
-  print('${hex.hexString}');
+  // print('${hex.hexString}');
   print(
       "\n---------------------Bắt đầu giải mã với Decryption Text-----------------------------");
   List<int> D = GiaimaAES(state, Key, 4, 10);
   print("\nGiai ma :");
   ShowMatrix(D, 4);
-  var decoded = utf8.decode(outputFunction(D));
+  var decoded = utf8.decode(cipherToInit(D));
   return decoded;
 }
 
@@ -120,6 +120,6 @@ String decryptAES(List<int> state, List<int> Key) {
   List<int> D = GiaimaAES(state, Key, 4, 10);
   print("\nGiai ma :");
   ShowMatrix(D, 4);
-  var decoded = utf8.decode(outputFunction(D));
+  var decoded = utf8.decode(cipherToInit(D));
   return decoded;
 }

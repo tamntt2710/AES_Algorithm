@@ -21,7 +21,7 @@ class EncryptController extends GetxController {
   void onTapEncrypt() {
     if (true) {
       AESModel aesModel = AESModel(
-          plaintText: Hex.fromPlaintText(plainTextEditingController.text),
+          plaintText: plainTextEditingController.text,
           plaintTextKey: keyTextEditingController.text,
           bitType: BitType.type128Bit);
       Hex output =

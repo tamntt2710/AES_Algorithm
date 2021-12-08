@@ -28,19 +28,20 @@ void main() {
   });
   test('aes Model', () {
     AESModel aesModel = AESModel(
-        plaintText: Hex.fromPlaintText('Hiếu đẹp trai'),
+        plaintText: 'Hiếu đẹp trai nhất hệ mặt trời',
         plaintTextKey: '0123456789ABCDEF',
         bitType: BitType.type128Bit);
     Hex output = aesModel.encryptToHex(); //4869e1babf7520c491e1bab9702074726169
     Hex encrypted = output;
     print(output
-        .hexString); //5d5b9bc5d3b35746f7c233f8d328bd51ff9d91abca2264126f3705ef9cc7033
+        .stringPresent); //5d5b9bc5d3b35746f7c233f8d328bd51ff9d91abca2264126f3705ef9cc7033
     AESModel aesModel2 = AESModel(
-        plaintText: encrypted,
+        encryptedText:
+            '0x5d5b9bc5d3b35746f7c233f8d328bd51a745f35cf50652cefbbd4462898799b807b77b97a683d2aea4b969f658136e2c',
         plaintTextKey: '0123456789ABCDEF',
         bitType: BitType.type128Bit);
     Hex decrypted = aesModel2.decryptToHex();
-    print(decrypted.toPlaintText());
+    print(decrypted.hexString);
   });
   test('to convertHexStringToList4HexString', () {
     String a = "Hiếu đẹp trai";
