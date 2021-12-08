@@ -100,8 +100,7 @@ class EncryptPage extends StatelessWidget {
       return TextFormField(
         keyboardType: TextInputType.multiline,
         maxLines: 5,
-        validator:
-            controller.isDecrypting.isTrue ? null : Validate.validatePlainText,
+        validator: Validate.validatePlainText,
         controller: controller.plainTextEditingController,
         style: const TextStyle(color: kPrimaryColor),
         decoration: InputDecoration(
@@ -193,7 +192,7 @@ class EncryptPage extends StatelessWidget {
       onTap: () {
         controller.copyToClipBoard();
       },
-      controller: controller.outputTextEditingController,
+      controller: controller.outputEncryptedTextEditingController,
       style: const TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(

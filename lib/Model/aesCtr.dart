@@ -2445,8 +2445,10 @@ List<String> splitStringByLength(String str, int length) {
     index = index + length;
   }
   //check last = fixedLength;
+
+  assert(data.last.length % 2 == 0);
   if (data.last.length < length) {
-    data.last = '0' * (length - data.last.length) + data.last;
+    data.last += '0' * (length - data.last.length);
   }
   return data;
 }

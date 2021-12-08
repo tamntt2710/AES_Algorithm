@@ -5,29 +5,37 @@ import 'package:aes_algorithm/Model/hexa.dart';
 import 'package:aes_algorithm/Views/home/home_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:string_validator/string_validator.dart';
 
 class DecryptController extends GetxController {
   TextEditingController encryptedTextEditingController =
       TextEditingController();
   TextEditingController keyTextEditingController = TextEditingController();
-  RxBool autoValidate = RxBool(false);
+  RxBool autoValidate = RxBool(true);
   Rx<BitType> currentBitType = Get.find<HomeController>().currentBitType;
   RxInt processingTime = Get.find<HomeController>().processingTime;
   RxList<int> cipherTexts = RxList.empty();
-  TextEditingController decryptedText = TextEditingController();
   Rx<EncodeType> encryptEncodeType = Rx(EncodeType.base64);
-  TextEditingController outputDecrytedController = TextEditingController();
-  final GlobalKey<FormState> formDecryptKey =
+  TextEditingController outputDecryptedController = TextEditingController();
+  final GlobalKey<FormState> formKey =
       GlobalKey<FormState>(debugLabel: 'decrypt');
 
   @override
   void onInit() {
     super.onInit();
+    currentBitType.listen((val) {
+      outputDecryptedController.clear();
+      keyTextEditingController.clear();
+      encryptedTextEditingController.clear();
+    });
+    encryptedTextEditingController.addListener(() {
+      outputDecryptedController.clear();
+    });
   }
 
   void onTapDecrypt() {
     if (validateAndSave) {
-      String input = EncodeType.base64 == EncodeType.base64
+      String input = encryptEncodeType.value == EncodeType.base64
           ? Hex.fromBase64(encryptedTextEditingController.text).stringPresent
           : encryptedTextEditingController.text;
 
@@ -38,29 +46,26 @@ class DecryptController extends GetxController {
       Hex output =
           aesModel.decryptToHex(); //4869e1babf7520c491e1bab9702074726169
       debugPrint('result = ${output.stringPresent}');
-      decryptedText.text = output.toPlaintText();
       processingTime.value = aesModel.processingTime;
       print(aesModel.decryptToHex().toPlaintText());
-      outputDecrytedController.text = output.toPlaintText();
+      outputDecryptedController.text = output.toPlaintText();
     }
   }
 
   bool get validateAndSave {
-    final form = formDecryptKey.currentState;
+    final form = formKey.currentState;
     if (form!.validate()) {
       form.save();
       return true;
     }
-    autoValidate = RxBool(true);
+    autoValidate.value = true;
     return false;
   }
-
-  Rx<bool> isValidated = RxBool(true);
 
   void clearText() {
     encryptedTextEditingController.clear();
     keyTextEditingController.clear();
-    outputDecrytedController.clear();
+    outputDecryptedController.clear();
     autoValidate.value = false;
   }
 }

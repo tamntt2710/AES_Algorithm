@@ -3,6 +3,7 @@ import 'package:aes_algorithm/Model/bit_enum.dart';
 import 'package:aes_algorithm/Model/encode_enum.dart';
 import 'package:aes_algorithm/Model/hexa.dart';
 import 'package:aes_algorithm/Views/home/home_logic.dart';
+import 'package:aes_algorithm/Views/home/widgets/decrypt/decrypt_logic.dart';
 import 'package:aes_algorithm/common/function_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +17,8 @@ class EncryptController extends GetxController {
   RxBool autoValidate = RxBool(true);
   Rx<BitType> currentBitType = Get.find<HomeController>().currentBitType;
   RxInt processingTime = Get.find<HomeController>().processingTime;
-  TextEditingController outputTextEditingController = TextEditingController();
+  TextEditingController outputEncryptedTextEditingController =
+      TextEditingController();
   RxBool isDecrypting = false.obs;
   Rx<EncodeType> encryptEncodeType = Rx(EncodeType.base64);
   Hex? result;
@@ -26,10 +28,17 @@ class EncryptController extends GetxController {
     super.onInit();
     encryptEncodeType.listen((type) {
       if (type == EncodeType.base64) {
-        outputTextEditingController.text = result!.toBase64();
+        outputEncryptedTextEditingController.text = result!.toBase64();
       } else if (type == EncodeType.hex) {
-        outputTextEditingController.text = result!.stringPresent;
+        outputEncryptedTextEditingController.text = result!.stringPresent;
       }
+    });
+    currentBitType.listen((val) {
+      outputEncryptedTextEditingController.clear();
+      keyTextEditingController.clear();
+    });
+    plainTextEditingController.addListener(() {
+      outputEncryptedTextEditingController.clear();
     });
   }
 
@@ -42,11 +51,17 @@ class EncryptController extends GetxController {
       result = aesModel.encryptToHex(); //4869e1babf7520c491e1bab9702074726169
       debugPrint('result = ${result!.stringPresent}');
 
-      outputTextEditingController.text =
+      outputEncryptedTextEditingController.text =
           encryptEncodeType.value == EncodeType.base64
               ? result!.toBase64()
               : result!.stringPresent;
       processingTime.value = aesModel.processingTime;
+      Get.find<DecryptController>().keyTextEditingController.text =
+          keyTextEditingController.text;
+      Get.find<DecryptController>().encryptedTextEditingController.text =
+          outputEncryptedTextEditingController.text;
+      Get.find<DecryptController>().encryptEncodeType.value =
+          encryptEncodeType.value;
     }
   }
 
@@ -60,17 +75,15 @@ class EncryptController extends GetxController {
     return false;
   }
 
-  Rx<bool> isValidated = RxBool(true);
-
   void clearText() {
     plainTextEditingController.clear();
     keyTextEditingController.clear();
-    outputTextEditingController.clear();
+    outputEncryptedTextEditingController.clear();
     autoValidate.value = false;
   }
 
   void copyToClipBoard() {
-    String text = outputTextEditingController.text;
+    String text = outputEncryptedTextEditingController.text;
     Clipboard.setData(ClipboardData(text: text));
     FunctionUtil.showToast('Copied "$text" to Clipboard');
   }

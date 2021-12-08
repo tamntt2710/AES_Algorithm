@@ -34,7 +34,7 @@ class DecryptPage extends StatelessWidget {
             margin: EdgeInsets.only(top: 10.h),
             child: Obx(() {
               return Form(
-                key: controller.formDecryptKey,
+                key: controller.formKey,
                 autovalidateMode: controller.autoValidate.isTrue
                     ? AutovalidateMode.onUserInteraction
                     : AutovalidateMode.disabled,
@@ -50,12 +50,23 @@ class DecryptPage extends StatelessWidget {
                     _buildRadioHexOrBase64(
                         controller, 'Encryption Format', false),
                     SizedBox(height: 16.h),
-                    CustomButton(
-                        onTap: () {
-                          controller.onTapDecrypt();
-                        },
-                        text: 'Decrypt',
-                        encrypt: true),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomButton(
+                            onTap: () {
+                              controller.clearText();
+                            },
+                            text: "Clear Text",
+                            encrypt: true),
+                        CustomButton(
+                            onTap: () {
+                              controller.onTapDecrypt();
+                            },
+                            text: 'Decrypt',
+                            encrypt: true),
+                      ],
+                    ),
                     SizedBox(height: 16.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -85,7 +96,9 @@ class DecryptPage extends StatelessWidget {
     return TextFormField(
       keyboardType: TextInputType.multiline,
       maxLines: 5,
-      validator: Validate.validatePlainText,
+      validator: (val) {
+        Validate.validateEncryptedText(val, controller.encryptEncodeType.value);
+      },
       controller: controller.encryptedTextEditingController,
       style: const TextStyle(color: kPrimaryColor),
       decoration: InputDecoration(
@@ -111,36 +124,38 @@ class DecryptPage extends StatelessWidget {
       DecryptController controller, double vertical, bool encrypt) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: vertical),
-      child: TextFormField(
-        controller: controller.keyTextEditingController,
-        style: encrypt
-            ? const TextStyle(color: kPrimaryColor)
-            : const TextStyle(color: Colors.white),
-        validator: (val) =>
-            Validate.validateKey(val, controller.currentBitType.value),
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(
-              controller.currentBitType.value.limitLength),
-        ],
-        decoration: const InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
-            ),
-            labelText: 'Enter your key',
-            labelStyle: TextStyle(
-                color: kPrimaryColor,
-                fontSize: 14,
-                fontWeight: FontWeight.bold)),
-      ),
+      child: Obx(() {
+        return TextFormField(
+          controller: controller.keyTextEditingController,
+          style: encrypt
+              ? const TextStyle(color: kPrimaryColor)
+              : const TextStyle(color: Colors.white),
+          validator: (val) =>
+              Validate.validateKey(val, controller.currentBitType.value),
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(
+                controller.currentBitType.value.limitLength),
+          ],
+          decoration: const InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: kPrimaryColor, width: 2.0),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
+              ),
+              labelText: 'Enter your key',
+              labelStyle: TextStyle(
+                  color: kPrimaryColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold)),
+        );
+      }),
     );
   }
 
@@ -155,13 +170,16 @@ class DecryptPage extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.bold)),
         SizedBox(width: 16),
-        RadioButtonGroup(
-          items: ["Base64", "Hex"],
-          onChanged: (index, val) {
-            EncodeType selected = EncodeTypeEnum.getEncodeType(index ?? 0);
-            controller.encryptEncodeType.value = selected;
-          },
-        ),
+        Obx(() {
+          return RadioButtonGroup(
+            initialIndex: controller.encryptEncodeType.value.index,
+            items: ["Base64", "Hex"],
+            onChanged: (index, val) {
+              EncodeType selected = EncodeTypeEnum.getEncodeType(index ?? 0);
+              controller.encryptEncodeType.value = selected;
+            },
+          );
+        }),
       ],
     );
   }
@@ -171,7 +189,7 @@ class DecryptPage extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       maxLines: 5,
       readOnly: true,
-      controller: controller.outputDecrytedController,
+      controller: controller.outputDecryptedController,
       style: const TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(

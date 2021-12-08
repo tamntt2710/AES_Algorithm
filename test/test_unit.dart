@@ -29,20 +29,20 @@ void main() {
   });
   test('aes Model', () {
     AESModel aesModel = AESModel(
-        plaintText:
-            'Hi mọi người bài 05 ( không phai ) lúc sản xuất ra 2 bản , bản này cũng là bản gốc Bản nào lên cũng được ! Tùy từng gu và phong cách của mỗi người để cảm nhận',
-        plaintTextKey: '0123456789ABCDEF11111111',
-        bitType: BitType.type192Bit);
+        plaintText: 'Cộng hoà xã hội chủ nghĩa việt nam',
+        plaintTextKey: '0123456789ABCDEF',
+        bitType: BitType.type128Bit);
     Hex output = aesModel.encryptToHex(); //4869e1babf7520c491e1bab9702074726169
     Hex encrypted = output;
     print(output
         .stringPresent); //5d5b9bc5d3b35746f7c233f8d328bd51ff9d91abca2264126f3705ef9cc7033
     AESModel aesModel2 = AESModel(
-        encryptedText: output.stringPresent,
-        plaintTextKey: '0123456789ABCDEF11111111',
-        bitType: BitType.type192Bit);
+        encryptedText:
+            '0x8dbf69b9d2da37dd9e79fae48b9f42680576ad0b660346097878eddd21f30272',
+        plaintTextKey: '1111111111111111',
+        bitType: BitType.type128Bit);
     Hex decrypted = aesModel2.decryptToHex();
-    print(decrypted.hexString);
+    print(decrypted.toPlaintText());
   });
   test('to convertHexStringToList4HexString', () {
     String a = "Hiếu đẹp trai";

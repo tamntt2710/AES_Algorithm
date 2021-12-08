@@ -9,8 +9,7 @@ class Hex {
   late String hexString;
 
   Hex.fromByteCode(this.byteCodes) {
-    byteCodes.removeWhere((element) => element == 0);
-    hexString = utf8.decode(byteCodes);
+    hexString = utf8.decode(byteCodes, allowMalformed: true);
   }
 
   Hex.fromPlaintText(String plaintText) {
@@ -32,8 +31,7 @@ class Hex {
   }
 
   String toPlaintText() {
-    byteCodes.removeWhere((element) => element == 0);
-    return utf8.decode(byteCodes);
+    return utf8.decode(byteCodes, allowMalformed: true);
   }
 
   String toBase64() {
@@ -46,8 +44,8 @@ class Hex {
   }
 
   Hex.fromBase64(String base64) {
+    assert(base64.length % 4 == 0);
     var bytes = base64Decode((base64));
-
     hexString = utf8.decode(bytes);
     print('hexString = $hexString');
     byteCodes = hex.decode(hexString);

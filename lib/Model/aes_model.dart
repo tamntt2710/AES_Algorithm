@@ -28,10 +28,11 @@ class AESModel {
     List<int> stateList = [];
     String hexString = convertPlainTextToHexString(plaintText!);
     List<Hex> hexList = splitHexByLength(hexString, 32);
+    List<int> key = getUIntKey();
     for (var hex in hexList) {
       List<String>? ciphers = convertHexStringToList4HexString(hex.hexString);
       final List<int> newList = ciphers.map((e) => int.parse(e)).toList();
-      List<int> state = MahoaAES(newList, getUIntKey(), bitType.Nr, bitType.Nk);
+      List<int> state = MahoaAES(newList, key, bitType.Nr, bitType.Nk);
       stateList.addAll(state);
     }
     print('ciphers= $stateList');
@@ -48,7 +49,6 @@ class AESModel {
     } else {
       encryptedText = '0x' + encryptedText!;
     }
-    print('encryptedText = $encryptedText');
     //  assert(encryptedText!.contains('0x'));
     Hex hex = Hex.from0XString(encryptedText!);
     List<Hex> splitedHex = splitHexByLength(hex.hexString, 32);
@@ -57,10 +57,10 @@ class AESModel {
       List<String>? ciphers = convertHexStringToList4HexString(hex.hexString);
       final List<int> newList = ciphers.map((e) => int.parse(e)).toList();
       List<int> D = GiaimaAES(newList, getUIntKey(), bitType.Nr, bitType.Nk);
-      byteCodes.addAll(cipherToInit(D));
+      byteCodes.addAll(D);
     }
     endTime = DateTime.now();
-    return Hex.fromByteCode(byteCodes);
+    return fromCipher(byteCodes);
   }
 
   List<int> getUIntKey() {
@@ -108,7 +108,7 @@ class AESModel {
     List<int> input = utf8.encode(str);
     List<String> hex = [];
     for (int number in input) {
-      hex.add(number.toRadixString(16));
+      hex.add(number.toRadixString(16).padLeft(2, '0'));
     }
     String hexString = hex.join();
     return hexString;

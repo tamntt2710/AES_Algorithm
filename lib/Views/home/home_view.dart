@@ -132,9 +132,9 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Expanded(child: const EncryptPage()),
+                  const Expanded(child: EncryptPage()),
                   // giai ma
-                  Expanded(child: const DecryptPage())
+                  const Expanded(child: DecryptPage())
                 ],
               ),
             ),
