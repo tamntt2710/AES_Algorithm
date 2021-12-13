@@ -1,19 +1,20 @@
 import 'package:aes_algorithm/Model/bit_enum.dart';
 import 'package:aes_algorithm/Model/encode_enum.dart';
+import 'package:aes_algorithm/Model/hexa.dart';
 import 'package:string_validator/string_validator.dart';
 
 class Validate {
-  static String? validateEncryptedText(String? value, EncodeType type) {
-    if (type == EncodeType.base64) {
-      if (!isBase64(value ?? '')) {
+  static String? validateHexInput(String? value) {
+      if (!isHexadecimal(value??'') && (value!.length  -2 ) % 32 ==0) {
+        return 'Input Format hex không hợp lệ';
+    }
+    return null;
+  }static String? validateBase64Text(String? value) {
+    if (value!.isEmpty&&value!.length %4!=0 &&!isBase64(value??'') &&
+        (!isHexadecimal(Hex.fromBase64(value!).hexString))) {
         return 'Input Format base64 không hợp lệ';
       }
-    } else if (type == EncodeType.hex) {
-      if (!isHexadecimal(value ?? '')) {
-        return 'Input Format hex không hợp lệ';
-      }
-    }
-    return 'Vui lòng nhập input hợp lệ';
+      return null;
   }
 
   static String? validatePlainText(String? value) {

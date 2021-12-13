@@ -27,7 +27,7 @@ class Hex {
   }
 
   String get stringPresent {
-    return '0x' + hexString;
+    return hexString;
   }
 
   String toPlaintText() {

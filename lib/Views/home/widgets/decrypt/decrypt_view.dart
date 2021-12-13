@@ -97,8 +97,9 @@ class DecryptPage extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       maxLines: 5,
       validator: (val) {
-        return Validate.validateEncryptedText(
-            val, controller.encryptEncodeType.value);
+        return controller.encryptEncodeType.value==EncodeType.hex? Validate
+            .validateHexInput(
+            val):Validate.validateBase64Text(val);
       },
       controller: controller.encryptedTextEditingController,
       style: const TextStyle(color: kPrimaryColor),
